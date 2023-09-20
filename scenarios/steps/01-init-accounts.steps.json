@@ -12,6 +12,10 @@
           "nonce": "0",
           "balance": "0"
         },
+        "address:business-3": {
+          "nonce": "0",
+          "balance": "0"
+        },
         "address:address-1": {
           "nonce": "0",
           "balance": "1000",

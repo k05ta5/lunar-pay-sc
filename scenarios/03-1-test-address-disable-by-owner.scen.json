@@ -13,7 +13,7 @@
         "function": "removeWhitelistedAddress",
         "value": "0",
         "arguments": [
-          "address:business-2"
+          "address:business-3"
         ],
         "gasPrice": "0",
         "gasLimit": "10,000,000"
@@ -29,8 +29,9 @@
         "sc:lunar-pay": {
           "esdt": "*",
           "storage": {
-            "str:whitelisted_addresses.len": "1",
+            "str:whitelisted_addresses.len": "2",
             "str:whitelisted_addresses.item|u32:1": "address:business-1",
+            "str:whitelisted_addresses.item|u32:2": "address:business-2",
             "+": ""
           },
           "code": "file:../output/lunar-pay.wasm"
@@ -62,7 +63,8 @@
         "sc:lunar-pay": {
           "esdt": "*",
           "storage": {
-            "str:whitelisted_addresses.len": "0",
+            "str:whitelisted_addresses.len": "1",
+            "str:whitelisted_addresses.item|u32:1": "address:business-2",
             "+": ""
           },
           "code": "file:../output/lunar-pay.wasm"
