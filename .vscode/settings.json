@@ -1,0 +1,11 @@
+{
+    "terminal.integrated.env.osx": {
+        "PATH": "${env:HOME}/multiversx-sdk:${env:HOME}/multiversx-sdk/vendor-rust/bin:${env:HOME}/multiversx-sdk/vmtools:${env:PATH}",
+        "RUSTUP_HOME": "${env:HOME}/multiversx-sdk/vendor-rust",
+        "CARGO_HOME": "${env:HOME}/multiversx-sdk/vendor-rust"
+    },
+    "rust-analyzer.server.extraEnv": {
+        "RUSTUP_HOME": "${env:HOME}/multiversx-sdk/vendor-rust",
+        "CARGO_HOME": "${env:HOME}/multiversx-sdk/vendor-rust"
+    }
+}

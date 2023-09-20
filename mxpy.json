@@ -1,0 +1,20 @@
+{
+    "configurations": {
+        "default": {
+            "proxy": "https://testnet-gateway.elrond.com",
+            "chainID": "T",
+            "dependencies.vmtools.tag": "v1.4.60"
+        }
+    },
+    "contract": {
+        "deploy": {
+            "send": true,
+            "verbose": true,
+            "recall-nonce": true,
+            "pem": "../path/to/wallet.pem",
+            "outfile": "bulk-transfers.json",
+            "bytecode": "output/bulk-transfers.wasm",
+            "gas-limit": 30000000
+        }
+    }
+}
