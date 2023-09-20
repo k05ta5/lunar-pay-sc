@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           12
+// Endpoints:                           17
 // Async Callback (empty):               1
-// Total number of exported functions:  14
+// Total number of exported functions:  19
 
 #![no_std]
 
@@ -22,6 +22,11 @@ multiversx_sc_wasm_adapter::endpoints! {
     lunar_pay
     (
         init => init
+        getWhitelistedTokenIds => whitelisted_token_ids
+        getWhitelistedAddresses => whitelisted_addresses
+        getLastAgreementId => last_agreement_id
+        getLastUniversalAgreementCode => last_uac
+        getAgreementsListByAddress => account_agreements_list
         depositEgld => deposit_egld
         withdrawEgld => withdraw_egld
         depositEsdt => deposit_esdt
@@ -30,10 +35,10 @@ multiversx_sc_wasm_adapter::endpoints! {
         removeWhitelistedToken => remove_whitelisted_token
         whitelistAddress => whitelist_address
         removeWhitelistedAddress => reomve_whitelisted_address
-        getWhitelistedTokenIds => whitelisted_token_ids
-        getWhitelistedAddresses => whitelisted_addresses
-        getAccounts => accounts
         transferTokens => transfer
+        createUAC => create_uac
+        createPaymentAgreement => create_payment_agreement
+        cancelPaymentAgreement => cancel_payment_agreement
     )
 }
 

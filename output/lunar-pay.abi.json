@@ -23,6 +23,77 @@
     },
     "endpoints": [
         {
+            "docs": [
+                "Protocol Storage "
+            ],
+            "name": "getWhitelistedTokenIds",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "variadic<EgldOrEsdtTokenIdentifier>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "getWhitelistedAddresses",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "variadic<Address>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "docs": [
+                "Agreement Storage ",
+                "Stores the last ID assigned to an agreement *"
+            ],
+            "name": "getLastAgreementId",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "docs": [
+                "Stores the last ID assigned to an UAC *"
+            ],
+            "name": "getLastUniversalAgreementCode",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "docs": [
+                "Stores all the agreement IDs that belong to an account *"
+            ],
+            "name": "getAgreementsListByAddress",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "variadic<u64>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
             "name": "depositEgld",
             "mutability": "mutable",
             "payableInTokens": [
@@ -115,45 +186,6 @@
             "outputs": []
         },
         {
-            "docs": [
-                "Protocol Storage "
-            ],
-            "name": "getWhitelistedTokenIds",
-            "mutability": "readonly",
-            "inputs": [],
-            "outputs": [
-                {
-                    "type": "variadic<EgldOrEsdtTokenIdentifier>",
-                    "multi_result": true
-                }
-            ]
-        },
-        {
-            "name": "getWhitelistedAddresses",
-            "mutability": "readonly",
-            "inputs": [],
-            "outputs": [
-                {
-                    "type": "variadic<Address>",
-                    "multi_result": true
-                }
-            ]
-        },
-        {
-            "docs": [
-                "Account Storage "
-            ],
-            "name": "getAccounts",
-            "mutability": "readonly",
-            "inputs": [],
-            "outputs": [
-                {
-                    "type": "variadic<Address>",
-                    "multi_result": true
-                }
-            ]
-        },
-        {
             "name": "transferTokens",
             "mutability": "mutable",
             "inputs": [
@@ -168,6 +200,29 @@
                 {
                     "name": "receiver",
                     "type": "Address"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "createUAC",
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "createPaymentAgreement",
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "cancelPaymentAgreement",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "id",
+                    "type": "u64"
                 }
             ],
             "outputs": []

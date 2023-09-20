@@ -12,7 +12,11 @@ pub trait ValidationModule:
     fn is_address_whitelisted(&self, address: &ManagedAddress<Self::Api>) -> bool {
         return self.whitelisted_addresses().contains(&address)
     }
-    
+
+    fn require_address_is_whitelisted(&self, address: &ManagedAddress) {
+        require!(self.is_address_whitelisted(address), "Address is not whitelisted");
+    }
+
     fn require_account_has_sufficient_balance(
         &self,
         account: &ManagedAddress,
