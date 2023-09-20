@@ -12,8 +12,8 @@
             "verbose": true,
             "recall-nonce": true,
             "pem": "../path/to/wallet.pem",
-            "outfile": "bulk-transfers.json",
-            "bytecode": "output/bulk-transfers.wasm",
+            "outfile": "lunar-pay.json",
+            "bytecode": "output/lunar-pay.wasm",
             "gas-limit": 30000000
         }
     }
