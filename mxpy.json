@@ -1,8 +1,8 @@
 {
     "configurations": {
         "default": {
-            "proxy": "https://testnet-gateway.elrond.com",
-            "chainID": "T",
+            "proxy": "https://devnet-gateway.elrond.com",
+            "chainID": "D",
             "dependencies.vmtools.tag": "v1.4.60"
         }
     },
