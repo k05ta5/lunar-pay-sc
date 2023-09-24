@@ -9,9 +9,11 @@ pub mod storage;
 pub mod transfers;
 pub mod agreement;
 pub mod validation;
+pub mod events;
 
 #[multiversx_sc::contract]
 pub trait LunarPay:
+    events::EventsModule +
     storage::StorageModule +
     account::AccountModule +
     protocol::ProtocolModule +

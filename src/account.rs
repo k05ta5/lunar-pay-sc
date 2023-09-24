@@ -3,6 +3,7 @@ multiversx_sc::derive_imports!();
 
 #[multiversx_sc::module]
 pub trait AccountModule:
+    crate::events::EventsModule +
     crate::storage::StorageModule +
     crate::transfers::TransfersModule +
     crate::validation::ValidationModule +
@@ -16,6 +17,7 @@ pub trait AccountModule:
 
         require!(self.is_token_whitelisted(&token), "Token is not whitelisted");
 
+        self.deposit_event(&caller, &token, 0, &payment_value);
         self.account_balance(&caller, &token).update(|balance| *balance += &payment_value);
     }
 
@@ -24,6 +26,7 @@ pub trait AccountModule:
         let caller = self.blockchain().get_caller();
         let token = EgldOrEsdtTokenIdentifier::egld();
 
+        self.withdraw_event(&caller, &token, 0, &amount);
         self.do_transfer_and_update_balance(&caller, &caller, &token, amount);
     }
 
@@ -31,21 +34,21 @@ pub trait AccountModule:
     #[endpoint(depositEsdt)]
     fn deposit_esdt(&self) {
         let caller = self.blockchain().get_caller();
-        let transfers = self.call_value().all_esdt_transfers();
+        let transfer = self.call_value().single_esdt();
 
-        for transfer in transfers.iter() {
-            let amount = transfer.amount;
-            let token = EgldOrEsdtTokenIdentifier::esdt(transfer.token_identifier);
+        let amount = transfer.amount;
+        let token = EgldOrEsdtTokenIdentifier::esdt(transfer.token_identifier);
 
-            require!(self.is_token_whitelisted(&token), "Token is not whitelisted");
+        require!(self.is_token_whitelisted(&token), "Token is not whitelisted");
 
-            self.account_balance(&caller, &token).update(|balance| *balance += &amount);
-        }
+        self.deposit_event(&caller, &token, 0, &amount);
+        self.account_balance(&caller, &token).update(|balance| *balance += &amount);
     }
 
     #[endpoint(withdrawEsdt)]
     fn withdraw_esdt(&self, token: &EgldOrEsdtTokenIdentifier, amount: &BigUint) {
         let caller = self.blockchain().get_caller();
+        self.withdraw_event(&caller, &token, 0, &amount);
         self.do_transfer_and_update_balance(&caller, &caller, token, amount);
     }
 }
