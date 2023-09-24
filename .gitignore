@@ -5,4 +5,6 @@
 # will have compiled files and executables
 target/
 
-*.sh
+/*.sh
+/mxpy.json
+/lunar-pay.json
