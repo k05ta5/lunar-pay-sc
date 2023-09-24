@@ -1,7 +1,7 @@
 {
     "configurations": {
         "default": {
-            "proxy": "https://devnet-gateway.elrond.com",
+            "proxy": "https://devnet-gateway.multiversx.com",
             "chainID": "D",
             "dependencies.vmtools.tag": "v1.4.60"
         }
@@ -14,6 +14,8 @@
             "pem": "../path/to/wallet.pem",
             "outfile": "lunar-pay.json",
             "bytecode": "output/lunar-pay.wasm",
+            "chain": "D",
+            "proxy": "https://devnet-gateway.multiversx.com",
             "gas-limit": 30000000
         }
     }
