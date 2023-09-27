@@ -1,0 +1,21 @@
+{
+  "name": "Initialize Scenario",
+  "steps": [
+    {
+      "step": "externalSteps",
+      "path": "init-steps/01-init-accounts.steps.json"
+    },
+    {
+      "step": "externalSteps",
+      "path": "init-steps/02-deploy-contract.steps.json"
+    },
+    {
+      "step": "externalSteps",
+      "path": "init-steps/03-whitelist-tokens.steps.json"
+    },
+    {
+      "step": "externalSteps",
+      "path": "init-steps/04-whitelist-addresses.steps.json"
+    }
+  ]
+}

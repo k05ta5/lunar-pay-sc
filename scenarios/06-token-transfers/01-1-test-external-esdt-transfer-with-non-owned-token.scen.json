@@ -1,9 +1,9 @@
 {
-  "name": "Test esdt token transfer to external wallet",
+  "name": "Test esdt token transfer to external wallet when the account does not have the token",
   "steps": [
     {
       "step": "externalSteps",
-      "path": "01-init-with-deposits.scen.json"
+      "path": "../01-init/02-init-with-deposits.scen.json"
     },
     {
       "step": "scCall",
@@ -12,15 +12,16 @@
         "to": "sc:lunar-pay",
         "function": "transferTokens",
         "arguments": [
-          "str:USDC",
-          "1000",
+          "str:WEGLD",
+          "50",
           "address:address-4"
         ],
         "gasPrice": "0",
         "gasLimit": "10,000,000"
       },
       "expect": {
-        "status": "0"
+        "status": "4",
+        "message": "str:Insufficient account balance"
       }
     },
     {
@@ -28,7 +29,7 @@
       "accounts": {
         "address:address-4": {
           "esdt": {
-            "str:USDC": "11,000",
+            "str:USDC": "10,000",
             "str:BUSD": "10,000",
             "str:WEGLD": "1,100"
           },
@@ -39,13 +40,14 @@
           "balance": "*",
           "esdt": {
             "str:WEGLD": "100",
-            "str:USDC": "14000"
+            "str:USDC": "15000"
           },
           "storage": {
-            "str:account_balance|address:address-1|nested:str:USDC": "4000",
+            "str:account_balance|address:address-1|nested:str:WEGLD": "0",
+            "str:account_balance|address:address-3|nested:str:WEGLD": "100",
             "+": ""
           },
-          "code": "file:../output/lunar-pay.wasm"
+          "code": "file:../../output/lunar-pay.wasm"
         },
         "+": ""
       }

@@ -3,7 +3,7 @@
   "steps": [
     {
       "step": "externalSteps",
-      "path": "01-init.scen.json"
+      "path": "../01-init/01-init.scen.json"
     },
     {
       "step": "scCall",
@@ -34,7 +34,7 @@
             "str:whitelisted_addresses.item|u32:2": "address:business-2",
             "+": ""
           },
-          "code": "file:../output/lunar-pay.wasm"
+          "code": "file:../../output/lunar-pay.wasm"
         },
         "+": ""
       }
@@ -67,7 +67,7 @@
             "str:whitelisted_addresses.item|u32:1": "address:business-2",
             "+": ""
           },
-          "code": "file:../output/lunar-pay.wasm"
+          "code": "file:../../output/lunar-pay.wasm"
         },
         "+": ""
       }

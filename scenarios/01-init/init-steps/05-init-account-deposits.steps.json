@@ -114,7 +114,7 @@
             "str:account_balance|address:address-3|nested:str:WEGLD": "100",
             "+": ""
           },
-          "code": "file:../../output/lunar-pay.wasm"
+          "code": "file:../../../output/lunar-pay.wasm"
         },
         "+": ""
       }

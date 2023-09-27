@@ -25,7 +25,7 @@
         "gasPrice": "0",
         "from": "address:owner",
         "gasLimit": "10,000,000",
-        "contractCode": "file:../../output/lunar-pay.wasm"
+        "contractCode": "file:../../../output/lunar-pay.wasm"
       },
       "expect": {
         "out": [],
@@ -41,7 +41,7 @@
         "sc:lunar-pay": {
           "nonce": "0",
           "balance": "0",
-          "code": "file:../../output/lunar-pay.wasm"
+          "code": "file:../../../output/lunar-pay.wasm"
         },
         "+": ""
       }

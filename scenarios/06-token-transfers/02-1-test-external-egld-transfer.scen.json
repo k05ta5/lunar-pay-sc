@@ -3,7 +3,7 @@
   "steps": [
     {
       "step": "externalSteps",
-      "path": "01-init-with-deposits.scen.json"
+      "path": "../01-init/02-init-with-deposits.scen.json"
     },
     {
       "step": "scCall",
@@ -39,7 +39,7 @@
             "str:account_balance|address:address-2|nested:str:EGLD": "100",
             "+": ""
           },
-          "code": "file:../output/lunar-pay.wasm"
+          "code": "file:../../output/lunar-pay.wasm"
         },
         "+": ""
       }

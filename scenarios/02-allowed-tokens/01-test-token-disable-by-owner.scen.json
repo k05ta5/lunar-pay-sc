@@ -1,26 +1,26 @@
 {
-  "name": "Test the address whitelist by owner",
+  "name": "Test the token whitelist",
   "steps": [
     {
       "step": "externalSteps",
-      "path": "01-init.scen.json"
+      "path": "../01-init/01-init.scen.json"
     },
     {
       "step": "scCall",
       "tx": {
         "from": "address:owner",
         "to": "sc:lunar-pay",
-        "function": "whitelistAddress",
+        "function": "removeWhitelistedToken",
         "value": "0",
         "arguments": [
-          "address:business-1"
+          "str:BUSD"
         ],
         "gasPrice": "0",
         "gasLimit": "10,000,000"
       },
       "expect": {
         "status": "4",
-        "message": "str:This address is already whitelisted"
+        "message": "str:This token is not whitelisted"
       }
     },
     {
@@ -29,12 +29,13 @@
         "sc:lunar-pay": {
           "esdt": "*",
           "storage": {
-            "str:whitelisted_addresses.len": "2",
-            "str:whitelisted_addresses.item|u32:1": "address:business-1",
-            "str:whitelisted_addresses.item|u32:2": "address:business-2",
+            "str:whitelisted_token_ids.len": "3",
+            "str:whitelisted_token_ids.item|u32:1": "str:EGLD",
+            "str:whitelisted_token_ids.item|u32:2": "str:USDC",
+            "str:whitelisted_token_ids.item|u32:3": "str:WEGLD",
             "+": ""
           },
-          "code": "file:../output/lunar-pay.wasm"
+          "code": "file:../../output/lunar-pay.wasm"
         },
         "+": ""
       }
@@ -44,16 +45,17 @@
       "tx": {
         "from": "address:owner",
         "to": "sc:lunar-pay",
-        "function": "whitelistAddress",
+        "function": "removeWhitelistedToken",
         "value": "0",
         "arguments": [
-          "address:business-3"
+          "str:EGLD"
         ],
         "gasPrice": "0",
         "gasLimit": "10,000,000"
       },
       "expect": {
-        "status": "0"
+        "status": "0",
+        "refund": "*"
       }
     },
     {
@@ -62,13 +64,12 @@
         "sc:lunar-pay": {
           "esdt": "*",
           "storage": {
-            "str:whitelisted_addresses.len": "3",
-            "str:whitelisted_addresses.item|u32:1": "address:business-1",
-            "str:whitelisted_addresses.item|u32:2": "address:business-2",
-            "str:whitelisted_addresses.item|u32:3": "address:business-3",
+            "str:whitelisted_token_ids.len": "2",
+            "str:whitelisted_token_ids.item|u32:1": "str:WEGLD",
+            "str:whitelisted_token_ids.item|u32:2": "str:USDC",
             "+": ""
           },
-          "code": "file:../output/lunar-pay.wasm"
+          "code": "file:../../output/lunar-pay.wasm"
         },
         "+": ""
       }

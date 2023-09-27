@@ -3,7 +3,7 @@
   "steps": [
     {
       "step": "externalSteps",
-      "path": "01-init-with-deposits.scen.json"
+      "path": "../01-init/02-init-with-deposits.scen.json"
     },
     {
       "step": "scCall",
@@ -46,7 +46,7 @@
             "str:account_balance|address:address-1|nested:str:USDC": "5000",
             "+": ""
           },
-          "code": "file:../output/lunar-pay.wasm"
+          "code": "file:../../output/lunar-pay.wasm"
         },
         "+": ""
       }

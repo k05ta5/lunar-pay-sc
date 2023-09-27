@@ -3,7 +3,7 @@
   "steps": [
     {
       "step": "externalSteps",
-      "path": "01-init.scen.json"
+      "path": "../01-init/01-init.scen.json"
     },
     {
       "step": "scCall",
@@ -35,7 +35,7 @@
             "str:whitelisted_token_ids.item|u32:3": "str:WEGLD",
             "+": ""
           },
-          "code": "file:../output/lunar-pay.wasm"
+          "code": "file:../../output/lunar-pay.wasm"
         },
         "+": ""
       }
@@ -70,7 +70,7 @@
             "str:whitelisted_token_ids.item|u32:4": "str:BUSD",
             "+": ""
           },
-          "code": "file:../output/lunar-pay.wasm"
+          "code": "file:../../output/lunar-pay.wasm"
         },
         "+": ""
       }

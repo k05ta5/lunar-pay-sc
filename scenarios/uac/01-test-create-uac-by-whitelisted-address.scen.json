@@ -3,7 +3,7 @@
   "steps": [
     {
       "step": "externalSteps",
-      "path": "01-init-with-deposits.scen.json"
+      "path": "../01-init/02-init-with-deposits.scen.json"
     },
     {
       "step": "scCall",
@@ -34,7 +34,7 @@
             "str:account_uac_list|address:business-1|str:.item|u32:1": "1",
             "+": ""
           },
-          "code": "file:../output/lunar-pay.wasm"
+          "code": "file:../../output/lunar-pay.wasm"
         },
         "+": ""
       }
@@ -83,7 +83,7 @@
             "str:account_uac_list|address:business-2|str:.item|u32:1": "3",
             "+": ""
           },
-          "code": "file:../output/lunar-pay.wasm"
+          "code": "file:../../output/lunar-pay.wasm"
         },
         "+": ""
       }
