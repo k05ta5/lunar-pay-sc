@@ -190,12 +190,12 @@
             "mutability": "mutable",
             "inputs": [
                 {
-                    "name": "amount",
-                    "type": "BigUint"
-                },
-                {
                     "name": "token",
                     "type": "EgldOrEsdtTokenIdentifier"
+                },
+                {
+                    "name": "amount",
+                    "type": "BigUint"
                 },
                 {
                     "name": "receiver",

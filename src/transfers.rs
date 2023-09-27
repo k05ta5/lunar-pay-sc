@@ -7,7 +7,7 @@ pub trait TransfersModule:
     crate::validation::ValidationModule
 {
     #[endpoint(transferTokens)]
-    fn transfer(&self, amount: BigUint, token: EgldOrEsdtTokenIdentifier, receiver: ManagedAddress) {
+    fn transfer(&self, token: EgldOrEsdtTokenIdentifier, amount: BigUint,  receiver: ManagedAddress) {
         let caller = self.blockchain().get_caller();
         require!(caller != receiver, "Sender and receiver must be different");
 

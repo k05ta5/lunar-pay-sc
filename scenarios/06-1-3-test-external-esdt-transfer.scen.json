@@ -12,8 +12,8 @@
         "to": "sc:lunar-pay",
         "function": "transferTokens",
         "arguments": [
-          "1000",
           "str:USDC",
+          "1000",
           "address:address-4"
         ],
         "gasPrice": "0",
