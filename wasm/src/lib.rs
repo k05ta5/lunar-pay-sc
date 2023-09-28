@@ -41,6 +41,12 @@ multiversx_sc_wasm_adapter::endpoints! {
         createUAC => create_uac
         createPaymentAgreement => create_payment_agreement
         cancelPaymentAgreement => cancel_payment_agreement
+        createSubscription => create_subscription
+        subscribe => subscribe
+        unsubscribe => unsubscribe
+        chargeAllSubscriptions => charge_all_subscription
+        chargeSubscription => charge_subscription
+        paySubscription => pay_subscription
     )
 }
 
