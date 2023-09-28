@@ -33,7 +33,8 @@ pub enum AgreementType<M: ManagedTypeApi> {
 
 #[derive(TopEncode, TopDecode, TypeAbi)]
 pub struct Agreement<M: ManagedTypeApi> {
-    pub uac: ManagedBuffer<M>, // Unique agreement code
+    pub creator: ManagedAddress<M>,
+
     pub sender: ManagedAddress<M>,
     pub recipient: ManagedAddress<M>,
 
