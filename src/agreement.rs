@@ -16,8 +16,50 @@ pub trait AgreementModule:
     }
 
     #[endpoint(createPaymentAgreement)]
-    fn create_payment_agreement(&self) {}
+    fn create_payment_agreement(&self) {
+        //TODO: Implement
+    }
 
     #[endpoint(cancelPaymentAgreement)]
-    fn cancel_payment_agreement(&self, id: u64) {}
+    fn cancel_payment_agreement(&self, _id: u64) {
+        //TODO: Implement
+    }
+
+    #[endpoint(createSubscription)]
+    fn create_subscription(&self){
+        let caller = self.blockchain().get_caller();
+
+        self.require_address_is_whitelisted(&caller);
+        //TODO: Implement
+    }
+
+    #[endpoint(subscribe)]
+    fn subscribe(&self, _agreement_id: &ManagedBuffer){
+        let _caller = self.blockchain().get_caller();
+        //TODO: Implement
+    }
+
+    #[endpoint(unsubscribe)]
+    fn unsubscribe(&self, _agreement_id: &ManagedBuffer){
+        let _caller = self.blockchain().get_caller();
+        //TODO: Implement
+    }
+
+    #[endpoint(chargeAllSubscriptions)]
+    fn charge_all_subscription(&self, _agreement_id: &ManagedBuffer){
+        let _caller = self.blockchain().get_caller();
+        //TODO: Implement
+    }
+
+    #[endpoint(chargeSubscription)]
+    fn charge_subscription(&self, _agreement_id: &ManagedBuffer){
+        let _caller = self.blockchain().get_caller();
+        //TODO: Implement
+    }
+
+    #[endpoint(paySubscription)]
+    fn pay_subscription(&self, _agreement_id: &ManagedBuffer){
+        let _caller = self.blockchain().get_caller();
+        //TODO: Implement
+    }
 }
