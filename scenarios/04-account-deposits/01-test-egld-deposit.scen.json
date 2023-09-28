@@ -30,6 +30,8 @@
         "sc:lunar-pay": {
           "balance": "100",
           "storage": {
+            "str:used_token_ids.len": "1",
+            "str:used_token_ids.item|u32:1": "str:EGLD",
             "str:account_balance|address:address-1|nested:str:EGLD": "100",
             "+": ""
           },

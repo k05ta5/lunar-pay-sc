@@ -47,6 +47,7 @@
             "str:WEGLD": "0"
           },
           "storage": {
+            "str:used_token_ids.len": "0",
             "str:account_balance|address:address-1|nested:str:USDC": "0",
             "str:account_balance|address:address-1|nested:str:WEGLD": "0",
             "+": ""

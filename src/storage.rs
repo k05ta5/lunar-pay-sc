@@ -53,6 +53,14 @@ pub trait StorageModule {
     #[storage_mapper("whitelisted_token_ids")]
     fn whitelisted_token_ids(&self) -> UnorderedSetMapper<EgldOrEsdtTokenIdentifier<Self::Api>>;
 
+    /*
+     * Stores the used token identifiers
+     * A token might get removed from the whitelist but the account might still have balance.
+     */
+    #[view(getUsedTokenIds)]
+    #[storage_mapper("used_token_ids")]
+    fn used_token_ids(&self) -> UnorderedSetMapper<EgldOrEsdtTokenIdentifier<Self::Api>>;
+
     #[view(getWhitelistedAddresses)]
     #[storage_mapper("whitelisted_addresses")]
     fn whitelisted_addresses(&self) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;

@@ -14,12 +14,12 @@ pub mod events;
 #[multiversx_sc::contract]
 pub trait LunarPay:
     events::EventsModule +
+    validation::ValidationModule +
     storage::StorageModule +
     account::AccountModule +
     protocol::ProtocolModule +
     transfers::TransfersModule +
-    agreement::AgreementModule +
-    validation::ValidationModule
+    agreement::AgreementModule
 {
     #[init]
     fn init(&self) {}

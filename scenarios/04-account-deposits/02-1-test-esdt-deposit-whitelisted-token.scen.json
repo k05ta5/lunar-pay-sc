@@ -39,6 +39,8 @@
             "str:USDC": "1000"
           },
           "storage": {
+            "str:used_token_ids.len": "1",
+            "str:used_token_ids.item|u32:1": "str:USDC",
             "str:account_balance|address:address-1|nested:str:USDC": "1000",
             "+": ""
           },

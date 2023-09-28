@@ -108,6 +108,10 @@
             "+": ""
           },
           "storage": {
+            "str:used_token_ids.len": "3",
+            "str:used_token_ids.item|u32:1": "str:USDC",
+            "str:used_token_ids.item|u32:2": "str:EGLD",
+            "str:used_token_ids.item|u32:3": "str:WEGLD",
             "str:account_balance|address:address-1|nested:str:USDC": "5000",
             "str:account_balance|address:address-2|nested:str:USDC": "5000",
             "str:account_balance|address:address-3|nested:str:USDC": "5000",

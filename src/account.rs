@@ -17,6 +17,10 @@ pub trait AccountModule:
 
         require!(self.is_token_whitelisted(&token), "Token is not whitelisted");
 
+        if !self.used_token_ids().contains(&token) {
+            self.used_token_ids().insert(token.clone());
+        }
+
         self.deposit_event(&caller, &token, 0, &payment_value);
         self.account_balance(&caller, &token).update(|balance| *balance += &payment_value);
     }
@@ -40,6 +44,10 @@ pub trait AccountModule:
         let token = EgldOrEsdtTokenIdentifier::esdt(transfer.token_identifier);
 
         require!(self.is_token_whitelisted(&token), "Token is not whitelisted");
+
+        if !self.used_token_ids().contains(&token) {
+            self.used_token_ids().insert(token.clone());
+        }
 
         self.deposit_event(&caller, &token, 0, &amount);
         self.account_balance(&caller, &token).update(|balance| *balance += &amount);

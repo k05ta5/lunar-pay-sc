@@ -23,6 +23,7 @@ multiversx_sc_wasm_adapter::endpoints! {
     (
         init => init
         getWhitelistedTokenIds => whitelisted_token_ids
+        getUsedTokenIds => used_token_ids
         getWhitelistedAddresses => whitelisted_addresses
         getLastAgreementId => last_agreement_id
         getLastUniversalAgreementCode => last_uac

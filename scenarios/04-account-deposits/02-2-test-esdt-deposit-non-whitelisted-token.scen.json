@@ -40,6 +40,7 @@
             "str:BUSD": "0"
           },
           "storage": {
+            "str:used_token_ids.len": "0",
             "str:account_balance|address:address-1|nested:str:BUSD": "0",
             "+": ""
           },
