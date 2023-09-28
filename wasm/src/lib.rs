@@ -32,6 +32,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         withdrawEgld => withdraw_egld
         depositEsdt => deposit_esdt
         withdrawEsdt => withdraw_esdt
+        getAccountBalances => get_account_balances
         whitelistToken => whitelist_token
         removeWhitelistedToken => remove_whitelisted_token
         whitelistAddress => whitelist_address
