@@ -8,6 +8,8 @@ pub enum AgreementType<M: ManagedTypeApi> {
         amount: BigUint<M>,
         frequency: u64, // Number of seconds between claims
         start_time: u64, // When the agreement starts
+        total_subscribers: Option<u64>,
+        maximum_subscribers: Option<u64>,
         end_time: Option<u64>, // When the agreement ends, if ever
         last_claim_time: Option<u64>, // Last time the funds were claimed
         last_claim_period: Option<u64>, // Last period for which the funds were claimed
