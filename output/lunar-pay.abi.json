@@ -73,15 +73,51 @@
             ]
         },
         {
-            "docs": [
-                "Stores the last ID assigned to an UAC *"
-            ],
-            "name": "getLastUniversalAgreementCode",
+            "name": "getAgreementIds",
             "mutability": "readonly",
             "inputs": [],
             "outputs": [
                 {
+                    "type": "variadic<u64>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "agreement_subscriber_defined_amount",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "aggreement_id",
                     "type": "u64"
+                },
+                {
+                    "name": "address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "AmountType"
+                }
+            ]
+        },
+        {
+            "name": "agreement_creator_defined_amount_per_subscriber",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "aggreement_id",
+                    "type": "u64"
+                },
+                {
+                    "name": "address",
+                    "type": "Address"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "AmountType"
                 }
             ]
         },
@@ -235,85 +271,39 @@
             "outputs": []
         },
         {
-            "name": "createUAC",
-            "mutability": "mutable",
-            "inputs": [],
-            "outputs": []
-        },
-        {
-            "name": "createPaymentAgreement",
-            "mutability": "mutable",
-            "inputs": [],
-            "outputs": []
-        },
-        {
-            "name": "cancelPaymentAgreement",
+            "name": "createRecuringPaymentAgreementToSend",
             "mutability": "mutable",
             "inputs": [
                 {
-                    "name": "_id",
-                    "type": "u64"
+                    "name": "token_identifier",
+                    "type": "EgldOrEsdtTokenIdentifier"
+                },
+                {
+                    "name": "amount_type",
+                    "type": "AgreementAmountType"
+                },
+                {
+                    "name": "frequency",
+                    "type": "FrequencyType"
                 }
             ],
             "outputs": []
         },
         {
-            "name": "createSubscription",
-            "mutability": "mutable",
-            "inputs": [],
-            "outputs": []
-        },
-        {
-            "name": "subscribe",
+            "name": "createRecuringPaymentAgreementToReceive",
             "mutability": "mutable",
             "inputs": [
                 {
-                    "name": "_agreement_id",
-                    "type": "bytes"
-                }
-            ],
-            "outputs": []
-        },
-        {
-            "name": "unsubscribe",
-            "mutability": "mutable",
-            "inputs": [
+                    "name": "token_identifier",
+                    "type": "EgldOrEsdtTokenIdentifier"
+                },
                 {
-                    "name": "_agreement_id",
-                    "type": "bytes"
-                }
-            ],
-            "outputs": []
-        },
-        {
-            "name": "chargeAllSubscriptions",
-            "mutability": "mutable",
-            "inputs": [
+                    "name": "amount_type",
+                    "type": "AgreementAmountType"
+                },
                 {
-                    "name": "_agreement_id",
-                    "type": "bytes"
-                }
-            ],
-            "outputs": []
-        },
-        {
-            "name": "chargeSubscription",
-            "mutability": "mutable",
-            "inputs": [
-                {
-                    "name": "_agreement_id",
-                    "type": "bytes"
-                }
-            ],
-            "outputs": []
-        },
-        {
-            "name": "paySubscription",
-            "mutability": "mutable",
-            "inputs": [
-                {
-                    "name": "_agreement_id",
-                    "type": "bytes"
+                    "name": "frequency",
+                    "type": "FrequencyType"
                 }
             ],
             "outputs": []
@@ -419,5 +409,118 @@
         }
     ],
     "hasCallback": false,
-    "types": {}
+    "types": {
+        "AgreementAmountType": {
+            "type": "enum",
+            "variants": [
+                {
+                    "name": "AnyAmount",
+                    "discriminant": 0
+                },
+                {
+                    "name": "FixedAmount",
+                    "discriminant": 1,
+                    "fields": [
+                        {
+                            "name": "0",
+                            "type": "BigUint"
+                        }
+                    ]
+                },
+                {
+                    "name": "BoundedAmount",
+                    "discriminant": 2,
+                    "fields": [
+                        {
+                            "name": "0",
+                            "type": "BoundedAmount"
+                        }
+                    ]
+                },
+                {
+                    "name": "SubscriberDefinedAmount",
+                    "discriminant": 3
+                },
+                {
+                    "name": "CreatorDefinedAmountPerSubscriber",
+                    "discriminant": 4
+                }
+            ]
+        },
+        "AmountType": {
+            "type": "enum",
+            "variants": [
+                {
+                    "name": "AnyAmount",
+                    "discriminant": 0
+                },
+                {
+                    "name": "FixedAmount",
+                    "discriminant": 1,
+                    "fields": [
+                        {
+                            "name": "0",
+                            "type": "BigUint"
+                        }
+                    ]
+                },
+                {
+                    "name": "BoundedAmount",
+                    "discriminant": 2,
+                    "fields": [
+                        {
+                            "name": "0",
+                            "type": "BoundedAmount"
+                        }
+                    ]
+                }
+            ]
+        },
+        "BoundedAmount": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "minimum_amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "maximum_amount",
+                    "type": "BigUint"
+                }
+            ]
+        },
+        "FrequencyType": {
+            "type": "enum",
+            "variants": [
+                {
+                    "name": "SECOND",
+                    "discriminant": 0
+                },
+                {
+                    "name": "MINUTE",
+                    "discriminant": 1
+                },
+                {
+                    "name": "HOUR",
+                    "discriminant": 2
+                },
+                {
+                    "name": "DAY",
+                    "discriminant": 3
+                },
+                {
+                    "name": "WEEK",
+                    "discriminant": 4
+                },
+                {
+                    "name": "MONTH",
+                    "discriminant": 5
+                },
+                {
+                    "name": "YEAR",
+                    "discriminant": 6
+                }
+            ]
+        }
+    }
 }

@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           17
+// Endpoints:                           20
 // Async Callback (empty):               1
-// Total number of exported functions:  19
+// Total number of exported functions:  22
 
 #![no_std]
 
@@ -26,7 +26,9 @@ multiversx_sc_wasm_adapter::endpoints! {
         getUsedTokenIds => used_token_ids
         getWhitelistedAddresses => whitelisted_addresses
         getLastAgreementId => last_agreement_id
-        getLastUniversalAgreementCode => last_uac
+        getAgreementIds => agreement_ids
+        agreement_subscriber_defined_amount => agreement_subscriber_defined_amount
+        agreement_creator_defined_amount_per_subscriber => agreement_creator_defined_amount_per_subscriber
         getAgreementsListByAddress => account_agreements_list
         depositEgld => deposit_egld
         withdrawEgld => withdraw_egld
@@ -38,15 +40,8 @@ multiversx_sc_wasm_adapter::endpoints! {
         whitelistAddress => whitelist_address
         removeWhitelistedAddress => reomve_whitelisted_address
         transferTokens => transfer
-        createUAC => create_uac
-        createPaymentAgreement => create_payment_agreement
-        cancelPaymentAgreement => cancel_payment_agreement
-        createSubscription => create_subscription
-        subscribe => subscribe
-        unsubscribe => unsubscribe
-        chargeAllSubscriptions => charge_all_subscription
-        chargeSubscription => charge_subscription
-        paySubscription => pay_subscription
+        createRecuringPaymentAgreementToSend => create_recurring_payment_agreement_to_send
+        createRecuringPaymentAgreementToReceive => create_recurring_payment_agreement_to_receive
     )
 }
 
