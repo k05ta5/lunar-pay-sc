@@ -55,6 +55,63 @@ pub trait AgreementModule:
         );
     }
 
+    #[endpoint(signAgreement)]
+    fn sign_agreement(&self, agreement_id: u64) {
+        self.require_existing_agreement_id(agreement_id);
+
+        let caller = self.blockchain().get_caller();
+
+        self.require_agreement_not_created_by_account(&caller, agreement_id);
+        self.require_agreement_not_signed_by_account(&caller, agreement_id);
+
+        let mut agreement = self.agreement_by_id(agreement_id).get();
+
+        match agreement.agreement_type {
+            AgreementType::RecurringPayoutToReceive {
+                amount_type,
+                senders,
+                frequency, .. } => {
+
+                senders.push(caller.clone());
+            },
+
+            AgreementType::TimeBoundPayoutToReceive {
+                mut senders,
+                frequency,
+                ..
+            } => {
+                senders.push(caller);
+            },
+
+            _ => panic!("Invalid agreement type")
+        }
+
+        self.agreement_by_id(agreement_id).set(agreement);
+        self.account_signed_agreements_list(&caller).insert(agreement_id);
+    }
+
+    #[endpoint(signAgreement)]
+    fn cancel_agreement(&self, agreement_id: u64) {
+        self.require_existing_agreement_id(agreement_id);
+
+        let caller = self.blockchain().get_caller();
+
+        let mut agreement = self.agreement_by_id(agreement_id).get();
+
+        match agreement.agreement_type {
+            AgreementType::RecurringPayoutToReceive {
+                amount_type,
+                receiver,
+                frequency, .. } => {},
+
+            AgreementType::TimeBoundPayoutToReceive {..} => {},
+
+            _ => panic!("Invalid agreement type")
+        }
+
+        self.agreement_by_id(agreement_id).set(agreement);
+    }
+
     #[inline]
     fn create_recurring_agreement(
         &self,
@@ -75,7 +132,7 @@ pub trait AgreementModule:
         };
 
         self.agreement_ids().insert(agreement_number);
-        self.account_agreements_list(&owner).insert(agreement_number);
+        self.account_created_agreements_list(&owner).insert(agreement_number);
         self.agreement_by_id(agreement_number).set(&agreement);
 
         return agreement;

@@ -54,20 +54,39 @@ pub trait StorageModule {
     #[storage_mapper("agreement_ids")]
     fn agreement_ids(&self) -> SetMapper<u64>;
 
-    #[view(agreement_subscriber_defined_amount)]
-    #[storage_mapper("agreement_subscriber_defined_amount")]
-    fn agreement_subscriber_defined_amount(&self, aggreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<AmountType<Self::Api>>;
-
-    #[view(agreement_creator_defined_amount_per_subscriber)]
-    #[storage_mapper("agreement_creator_defined_amount_per_subscriber")]
-    fn agreement_creator_defined_amount_per_subscriber(&self, aggreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<AmountType<Self::Api>>;
-
     /** Stores the agreement by ID **/
     #[storage_mapper("agreement_by_id")]
     fn agreement_by_id(&self, agreement_id: u64) -> SingleValueMapper<Agreement<Self::Api>>;
 
+    #[view(agreement_subscriber_defined_amount)]
+    #[storage_mapper("agreement_subscriber_defined_amount")]
+    fn agreement_subscriber_defined_amount(&self, aggreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<AmountType<Self::Api>>;
+
+    // #[view(getAgreementCreatorDefinedAmountPerSubscriber)]
+    #[storage_mapper("agreement_creator_defined_amount_per_subscriber")]
+    fn agreement_creator_defined_amount_per_subscriber(&self, aggreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<AmountType<Self::Api>>;
+
+    #[view(getAgreementWhitelistEnabled)]
+    #[storage_mapper("agreement_whitelist_enabled")]
+    fn agreement_whitelist_enabled(&self, agreement_id: u64) -> SingleValueMapper<bool>;
+
+    #[view(getAgreementWhitelist)]
+    #[storage_mapper("agreement_whitelist")]
+    fn agreement_whitelist(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+
+    #[storage_mapper("agreement_senders")]
+    fn agreement_senders(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+
+    #[storage_mapper("agreement_receivers")]
+    fn agreement_receivers(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+
     /** Stores all the agreement IDs that belong to an account **/
     #[view(getAgreementsListByAddress)]
     #[storage_mapper("account_agreements_list")]
-    fn account_agreements_list(&self, address: &ManagedAddress) -> UnorderedSetMapper<u64>;
+    fn account_created_agreements_list(&self, address: &ManagedAddress) -> UnorderedSetMapper<u64>;
+
+    /** Stores all the agreement IDs that belong to an account **/
+    #[view(getAgreementsListByAddress)]
+    #[storage_mapper("account_agreements_list")]
+    fn account_signed_agreements_list(&self, address: &ManagedAddress) -> UnorderedSetMapper<u64>;
 }

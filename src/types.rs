@@ -38,30 +38,27 @@ pub enum AgreementAmountType<M: ManagedTypeApi> {
 pub enum AgreementType<M: ManagedTypeApi> {
     RecurringPayoutToSend {
         sender: ManagedAddress<M>,
-        receivers: ManagedVec<M, ManagedAddress<M>>,
+        // receivers: ManagedVec<M, ManagedAddress<M>>,
         amount_type: AgreementAmountType<M>,
         frequency: FrequencyType,
     },
     RecurringPayoutToReceive {
         receiver: ManagedAddress<M>,
-        senders: ManagedVec<M, ManagedAddress<M>>,
+        // senders: ManagedVec<M, ManagedAddress<M>>,
         amount_type: AgreementAmountType<M>,
 
         frequency: FrequencyType,
-
-        whitelist_enabled: Option<bool>,
-        whitelisted_addresses: Option<ManagedVec<M, ManagedAddress<M>>>
     },
     TimeBoundPayoutToSend {
         sender: ManagedAddress<M>,
-        receivers: ManagedVec<M, ManagedAddress<M>>,
+        // receivers: ManagedVec<M, ManagedAddress<M>>,
         amount_type: AgreementAmountType<M>,
 
         frequency: FrequencyType,
     },
     TimeBoundPayoutToReceive {
         receiver: ManagedAddress<M>,
-        senders: ManagedVec<M, ManagedAddress<M>>,
+        // senders: ManagedVec<M, ManagedAddress<M>>,
 
         frequency: FrequencyType,
     }
