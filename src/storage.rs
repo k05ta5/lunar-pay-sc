@@ -81,7 +81,7 @@ pub trait StorageModule {
     fn agreement_receivers(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
 
     /** Stores all the agreement IDs that belong to an account **/
-    #[view(getAgreementsListByAddress)]
+    #[view(getAccountCreatedAgreementsListByAddress)]
     #[storage_mapper("account_agreements_list")]
     fn account_created_agreements_list(&self, address: &ManagedAddress) -> UnorderedSetMapper<u64>;
 
