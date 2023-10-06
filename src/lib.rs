@@ -7,10 +7,11 @@ pub mod account;
 pub mod protocol;
 pub mod storage;
 pub mod transfers;
-pub mod agreement;
+// pub mod agreement;
 pub mod validation;
 pub mod agreement_v2;
 pub mod events;
+pub mod charges;
 
 pub mod types;
 
@@ -23,8 +24,9 @@ pub trait LunarPay:
     account::AccountModule +
     protocol::ProtocolModule +
     transfers::TransfersModule +
-    agreement::AgreementModule +
-    agreement_v2::AgreementV2Module
+    // agreement::AgreementModule +
+    agreement_v2::AgreementV2Module +
+    charges::ChargesModule
 {
     #[init]
     fn init(&self) {}

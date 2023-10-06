@@ -103,13 +103,43 @@
             ]
         },
         {
-            "name": "agreement_creator_defined_amount_per_subscriber",
+            "name": "getAgreementWhitelistEnabled",
             "mutability": "readonly",
             "inputs": [
                 {
-                    "name": "aggreement_id",
+                    "name": "agreement_id",
                     "type": "u64"
-                },
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        },
+        {
+            "name": "getAgreementWhitelist",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "agreement_id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "variadic<Address>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "docs": [
+                "Stores all the agreement IDs that belong to an account *"
+            ],
+            "name": "getAccountCreatedAgreementsListByAddress",
+            "mutability": "readonly",
+            "inputs": [
                 {
                     "name": "address",
                     "type": "Address"
@@ -117,13 +147,14 @@
             ],
             "outputs": [
                 {
-                    "type": "AmountType"
+                    "type": "variadic<u64>",
+                    "multi_result": true
                 }
             ]
         },
         {
             "docs": [
-                "Stores all the agreement IDs that belong to an account *"
+                "Stores all the agreement IDs that was signed by an account an account *"
             ],
             "name": "getAgreementsListByAddress",
             "mutability": "readonly",
@@ -285,6 +316,10 @@
                 {
                     "name": "frequency",
                     "type": "FrequencyType"
+                },
+                {
+                    "name": "_whitelisted_addresses",
+                    "type": "Option<List<Address>>"
                 }
             ],
             "outputs": []
@@ -304,6 +339,64 @@
                 {
                     "name": "frequency",
                     "type": "FrequencyType"
+                },
+                {
+                    "name": "_whitelisted_addresses",
+                    "type": "Option<List<Address>>"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "docs": [
+                "\\n     *  Subscribe to an agreement, only allowed to subscribe as sender to RecurringPayoutToReceive and TimeBoundPayoutToReceive\\n     "
+            ],
+            "name": "signAgreement",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "agreement_id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "docs": [
+                "\\n     * Unsubscribe from an agreement, only allowed to unsubscribe as sender from RecurringPayoutToReceive and TimeBoundPayoutToReceive\\n     "
+            ],
+            "name": "cancelAgreement",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "agreement_id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "claimAgreement",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "agreement_id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "chargeAgreement",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "agreement_id",
+                    "type": "u64"
+                },
+                {
+                    "name": "address",
+                    "type": "Option<Address>"
                 }
             ],
             "outputs": []

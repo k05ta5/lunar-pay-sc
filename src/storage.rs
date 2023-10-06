@@ -75,7 +75,22 @@ pub trait StorageModule {
     fn agreement_whitelist(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
 
     #[storage_mapper("agreement_senders")]
-    fn agreement_senders(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+    fn agreement_current_senders(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+
+    /** Stores all senders from an agreement, even the ones that canceled **/
+    #[storage_mapper("agreement_all_senders")]
+    fn agreement_all_senders(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+
+    // Stores the time when a sender signed an agreement
+    #[storage_mapper("agreement_sender_sign_time")]
+    fn agreement_sender_sign_time(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
+
+    // Stores the time when a sender canceled an agreement
+    #[storage_mapper("agreement_sender_cancel_time")]
+    fn agreement_sender_cancel_time(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
+
+    #[storage_mapper("agreement_sender_last_charge_time")]
+    fn agreement_sender_last_charge_time(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
 
     #[storage_mapper("agreement_receivers")]
     fn agreement_receivers(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
@@ -85,7 +100,7 @@ pub trait StorageModule {
     #[storage_mapper("account_agreements_list")]
     fn account_created_agreements_list(&self, address: &ManagedAddress) -> UnorderedSetMapper<u64>;
 
-    /** Stores all the agreement IDs that belong to an account **/
+    /** Stores all the agreement IDs that was signed by an account an account **/
     #[view(getAgreementsListByAddress)]
     #[storage_mapper("account_agreements_list")]
     fn account_signed_agreements_list(&self, address: &ManagedAddress) -> UnorderedSetMapper<u64>;

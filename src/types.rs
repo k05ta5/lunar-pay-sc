@@ -66,6 +66,8 @@ pub enum AgreementType<M: ManagedTypeApi> {
 
 #[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, TypeAbi)]
 pub struct Agreement<M: ManagedTypeApi> {
+    pub id: u64,
+    
     pub creator: ManagedAddress<M>,
 
     pub token_identifier: EgldOrEsdtTokenIdentifier<M>,

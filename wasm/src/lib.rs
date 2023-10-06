@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           20
+// Endpoints:                           26
 // Async Callback (empty):               1
-// Total number of exported functions:  22
+// Total number of exported functions:  28
 
 #![no_std]
 
@@ -28,8 +28,10 @@ multiversx_sc_wasm_adapter::endpoints! {
         getLastAgreementId => last_agreement_id
         getAgreementIds => agreement_ids
         agreement_subscriber_defined_amount => agreement_subscriber_defined_amount
-        agreement_creator_defined_amount_per_subscriber => agreement_creator_defined_amount_per_subscriber
-        getAgreementsListByAddress => account_agreements_list
+        getAgreementWhitelistEnabled => agreement_whitelist_enabled
+        getAgreementWhitelist => agreement_whitelist
+        getAccountCreatedAgreementsListByAddress => account_created_agreements_list
+        getAgreementsListByAddress => account_signed_agreements_list
         depositEgld => deposit_egld
         withdrawEgld => withdraw_egld
         depositEsdt => deposit_esdt
@@ -42,6 +44,10 @@ multiversx_sc_wasm_adapter::endpoints! {
         transferTokens => transfer
         createRecuringPaymentAgreementToSend => create_recurring_payment_agreement_to_send
         createRecuringPaymentAgreementToReceive => create_recurring_payment_agreement_to_receive
+        signAgreement => sign_agreement
+        cancelAgreement => cancel_agreement
+        claimAgreement => claim_agreement
+        chargeAgreement => charge_agreement
     )
 }
 

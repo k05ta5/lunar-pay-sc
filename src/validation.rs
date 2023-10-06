@@ -17,13 +17,22 @@ pub trait ValidationModule:
         require!(self.is_address_whitelisted(address), "Address is not whitelisted");
     }
 
+    fn account_has_sufficient_balance(
+        &self,
+        account: &ManagedAddress,
+        token: &EgldOrEsdtTokenIdentifier<Self::Api>,
+        amount: &BigUint
+    ) {
+        return self.account_balance(&account, &token).get() >= *amount;
+    }
+
     fn require_account_has_sufficient_balance(
         &self,
         account: &ManagedAddress,
         token: &EgldOrEsdtTokenIdentifier<Self::Api>,
         amount: &BigUint
     ) {
-        require!(self.account_balance(&account, &token).get() >= *amount, "Insufficient account balance.");
+        require!(self.account_has_sufficient_balance(&account, &token, &amount), "Insufficient account balance.");
     }
 
     /** Agreement Validations **/
@@ -44,15 +53,15 @@ pub trait ValidationModule:
         require!(!self.is_agreement_created_by_account(account, agreement_id), "This agreement is created by you.");
     }
 
-    fn is_agreement_signed_by_account(&self, account: &ManagedAddress, agreement_id: u64) -> bool {
-        self.account_signed_agreements_list(account).contains(&agreement_id)
+    fn is_agreement_signed_by_account(&self, agreement_id: u64, account: &ManagedAddress) -> bool {
+        self.agreement_current_senders(agreement_id).contains(account)
     }
 
-    fn require_agreement_signed_by_account(&self, account: &ManagedAddress, agreement_id: u64) {
-        require!(self.is_agreement_signed_by_account(account, agreement_id), "You did not sign this agreement.");
+    fn require_agreement_signed_by_account(&self, agreement_id: u64, account: &ManagedAddress) {
+        require!(self.is_agreement_signed_by_account(agreement_id, account), "You did not sign this agreement.");
     }
 
-    fn require_agreement_not_signed_by_account(&self, account: &ManagedAddress, agreement_id: u64) {
-        require!(!self.is_agreement_signed_by_account(account, agreement_id), "You already signed this agreement.");
+    fn require_agreement_not_signed_by_account(&self, agreement_id: u64, account: &ManagedAddress) {
+        require!(!self.is_agreement_signed_by_account(agreement_id, account), "You already signed this agreement.");
     }
 }
