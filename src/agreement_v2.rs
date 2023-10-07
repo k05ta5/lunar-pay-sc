@@ -5,9 +5,9 @@ use crate::types::{Agreement, AgreementAmountType, AgreementType, FrequencyType}
 
 #[multiversx_sc::module]
 pub trait AgreementV2Module:
+    crate::charges::ChargesModule +
     crate::storage::StorageModule +
-    crate::validation::ValidationModule +
-    crate::charges::ChargesModule
+    crate::validation::ValidationModule
 {
     #[endpoint(createRecuringPaymentAgreementToSend)]
     fn create_recurring_payment_agreement_to_send(
@@ -23,8 +23,7 @@ pub trait AgreementV2Module:
         let agreement_type = AgreementType::RecurringPayoutToSend {
             amount_type,
             sender: caller.clone(),
-            frequency,
-            receivers: ManagedVec::new(),
+            frequency
         };
 
         self.create_recurring_agreement(&caller, agreement_type, token_identifier, _whitelisted_addresses);

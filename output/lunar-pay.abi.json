@@ -387,16 +387,12 @@
             "outputs": []
         },
         {
-            "name": "chargeAgreement",
+            "name": "chargeAgreementSenders",
             "mutability": "mutable",
             "inputs": [
                 {
                     "name": "agreement_id",
                     "type": "u64"
-                },
-                {
-                    "name": "address",
-                    "type": "Option<Address>"
                 }
             ],
             "outputs": []

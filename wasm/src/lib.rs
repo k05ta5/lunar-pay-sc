@@ -47,7 +47,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         signAgreement => sign_agreement
         cancelAgreement => cancel_agreement
         claimAgreement => claim_agreement
-        chargeAgreement => charge_agreement
+        chargeAgreementSenders => charge_agreement_senders
     )
 }
 

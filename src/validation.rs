@@ -22,7 +22,7 @@ pub trait ValidationModule:
         account: &ManagedAddress,
         token: &EgldOrEsdtTokenIdentifier<Self::Api>,
         amount: &BigUint
-    ) {
+    ) -> bool {
         return self.account_balance(&account, &token).get() >= *amount;
     }
 

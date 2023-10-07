@@ -15,7 +15,7 @@ pub trait ChargesModule:
         let caller = self.blockchain().get_caller();
         let agreement = self.agreement_by_id(agreement_id).get();
 
-        match _agreement.agreement_type {
+        match agreement.agreement_type {
             // Charge the sender(s) of an agreement that this account created
             AgreementType::RecurringPayoutToReceive {..} => {
                 self.require_agreement_created_by_account(&caller, agreement_id);
@@ -30,7 +30,7 @@ pub trait ChargesModule:
         }
 
         let senders = self.agreement_current_senders(agreement_id);
-        if (senders.is_empty()) {
+        if senders.is_empty() {
             panic!("You have no senders for this agreement");
         }
 
@@ -68,14 +68,14 @@ pub trait ChargesModule:
 
     // TODO: implement this
     #[inline]
-    fn calculate_agreement_sender_amount_to_charge(&self, agreement: &Agreement<Self::Api>, sender: &ManagedAddress<Self::Api>) -> BigUint<M> {
-        
+    fn calculate_agreement_sender_amount_to_charge(&self, agreement: &Agreement<Self::Api>, sender: &ManagedAddress<Self::Api>) -> BigUint {
+        return BigUint::zero();
     }
 
     #[inline]
     fn calculate_agreement_sender_last_charge_time(&self, agreement_id: u64, sender: &ManagedAddress<Self::Api>) -> u64 {
-        let last_charge_time = self.agreement_sender_last_charge_time(agreement.id, &sender);
-        if (last_charge_time.is_empty()) {
+        let last_charge_time = self.agreement_sender_last_charge_time(agreement_id, &sender);
+        if last_charge_time.is_empty() {
             return self.agreement_sender_sign_time(agreement_id, &sender).get()
         }
 
