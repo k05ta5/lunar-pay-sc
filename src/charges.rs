@@ -1,7 +1,7 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::types::{Agreement, AgreementType, FrequencyType};
+use crate::types::{Agreement, AgreementType, FrequencyType, PayoutToReceiveAmountType};
 
 #[multiversx_sc::module]
 pub trait ChargesModule:
@@ -47,17 +47,34 @@ pub trait ChargesModule:
     #[inline]
     fn charge_agreement_sender(&self, agreement: &Agreement<Self::Api>, sender: &ManagedAddress<Self::Api>) {
         let timestamp = self.blockchain().get_block_timestamp();
-        
-        let last_charge_time = self.calculate_agreement_sender_last_charge_time(agreement.id, &sender);
-
+        let last_charge_time = self.calculate_agreement_sender_last_charge_time(agreement.id, &sender, &agreement.creator);
+        let sender_sign_time= return self.agreement_sender_sign_time(agreement.id, &sender).get();
         let mut amount_to_transfer = BigUint::zero();
 
         match agreement.agreement_type {
             // Charge the sender(s) of an agreement that this account created
-            AgreementType::RecurringPayoutToReceive {..} => {},
+            AgreementType::RecurringPayoutToReceive {amount_type, frequency, ..} => {
+
+
+            },
 
             // Charge the sender(s) of an agreement that this account created **/
-            AgreementType::TimeBoundPayoutToReceive {..} => {},
+            AgreementType::TimeBoundPayoutToReceive {amount_type, frequency, ..} => {
+                let frequency_seconds = self.calculate_frequency_seconds(frequency);
+                let charge_periods_count = ((timestamp - sender_sign_time) / frequency_seconds).floor();
+                let last_charge_period_end_timestamp = sender_sign_time + (frequency_seconds * charge_periods_count);
+
+                if timestamp > last_charge_period_end_timestamp && last_charge_time <= last_charge_period_end_timestamp {
+                    match amount_type {
+                        PayoutToReceiveAmountType::FixedAmount(amount) => {
+                            amount_to_transfer = amount;
+                        },
+                        PayoutToReceiveAmountType::SubscriberDefinedAmount => {
+                            amount_to_transfer = self.agreement_subscriber_defined_amount(agreement.id, &sender).get();
+                        }
+                    }
+                }
+            },
 
             _ => panic!("You cannot charge tokens for this agreement")
         }
@@ -66,23 +83,38 @@ pub trait ChargesModule:
 
         // TODO: do the transfer if enough amount and save charge with amount and timestamp as failed or success
 
-        self.agreement_sender_last_charge_time(agreement.id, &sender).set(timestamp)
+        self.agreement_sender_transfer_charge_time(agreement.id, &sender).set(timestamp)
 
     }
 
     // TODO: implement this
     #[inline]
     fn calculate_agreement_sender_amount_to_charge(&self, agreement: &Agreement<Self::Api>, sender: &ManagedAddress<Self::Api>) -> BigUint {
+        let mut amount_to_transfer = BigUint::zero();
+        match agreement.agreement_type.amount_type {
+            
+        }
         return BigUint::zero();
     }
 
     #[inline]
-    fn calculate_agreement_sender_last_charge_time(&self, agreement_id: u64, sender: &ManagedAddress<Self::Api>) -> u64 {
-        let last_charge_time = self.agreement_sender_last_charge_time(agreement_id, &sender);
+    fn calculate_agreement_sender_last_charge_time(&self, agreement_id: u64, sender: &ManagedAddress<Self::Api>, receiver: &ManagedAddress<Self::Api>) -> u64 {
+        let last_charge_time = self.agreement_last_successful_transfer_time(agreement_id, &sender, &receiver);
         if last_charge_time.is_empty() {
             return self.agreement_sender_sign_time(agreement_id, &sender).get()
         }
 
         return last_charge_time.get()
+    }
+
+    #[inline]
+    fn calculate_frequency_seconds(&self, frequency: FrequencyType) -> u64 {
+        match frequency {
+            FrequencyType::HOUR => 3600,  
+            FrequencyType::DAY => 3600 * 24,     // 1 day = 86400 seconds
+            FrequencyType::WEEK => 3600 * 24 * 7,   // 1 week = 604800 seconds
+            FrequencyType::MONTH => 2592000, // 1 month ≈ 30.44 days ≈ 2592000 seconds
+            FrequencyType::YEAR => 31536000, // 1 year = 31536000 seconds
+        }
     }
 }

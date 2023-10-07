@@ -1,7 +1,7 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::types::{Agreement, AmountType};
+use crate::types::{Agreement, AmountType, AgreementTransfer};
 
 #[multiversx_sc::module]
 pub trait StorageModule {
@@ -60,7 +60,7 @@ pub trait StorageModule {
 
     #[view(agreement_subscriber_defined_amount)]
     #[storage_mapper("agreement_subscriber_defined_amount")]
-    fn agreement_subscriber_defined_amount(&self, aggreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<AmountType<Self::Api>>;
+    fn agreement_subscriber_defined_amount(&self, aggreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<BigUint<Self::Api>>;
 
     // #[view(getAgreementCreatorDefinedAmountPerSubscriber)]
     #[storage_mapper("agreement_creator_defined_amount_per_subscriber")]
@@ -89,8 +89,17 @@ pub trait StorageModule {
     #[storage_mapper("agreement_sender_cancel_time")]
     fn agreement_sender_cancel_time(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
 
-    #[storage_mapper("agreement_sender_last_charge_time")]
-    fn agreement_sender_last_charge_time(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
+    // Stores all agreement transfers for one sender, for those agreements with only one sender it will behave as agreement transfers as well
+    #[storage_mapper("agreement_sender_transfers")]
+    fn agreement_sender_transfers(&self, agreement_id: u64, sender: &ManagedAddress) -> UnorderedSetMapper<AgreementTransfer<Self::Api>>;
+
+    // Stores all agreement transfers for one receiver, for those agreements with only one receiver it will behave as agreement transfers as well
+    #[storage_mapper("agreement_receiver_transfers")]
+    fn agreement_receiver_transfers(&self, agreement_id: u64, receiver: &ManagedAddress) -> UnorderedSetMapper<AgreementTransfer<Self::Api>>;
+
+    // Last transfer time betweek a sender and a receiver for a specific agreement, can be used for all agreements types
+    #[storage_mapper("agreement_last_successful_transfer_time")]
+    fn agreement_last_successful_transfer_time(&self, agreement_id: u64, sender: &ManagedAddress, receiver: &ManagedAddress) -> SingleValueMapper<u64>;
 
     #[storage_mapper("agreement_receivers")]
     fn agreement_receivers(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;

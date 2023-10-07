@@ -91,21 +91,62 @@ pub trait AgreementV2Module:
     #[endpoint(signAgreement)]
     fn sign_agreement(&self, agreement_id: u64) {
         self.require_existing_agreement_id(agreement_id);
+        let agreement = self.agreement_by_id(agreement_id).get();
+        match agreement.agreement_type {
+            AgreementType::RecurringPayoutToReceive {amount_type, ..} => {
+                match amount_type {
+                    PayoutToReceiveAmountType::SubscriberDefinedAmount => panic!("You cannot sign this agreement without providing an amount, use signAgreementWithAmount instead"),
+                    _ => {}
+                }
+            },
+
+            AgreementType::TimeBoundPayoutToReceive {..} => {},
+
+            _ => panic!("You cannot sign this agreement type.")
+        }
 
         let caller = self.blockchain().get_caller();
 
         self.require_agreement_not_created_by_account(&caller, agreement_id);
         self.require_agreement_not_signed_by_account(agreement_id, &caller);
 
+        self.set_storage_for_sign_agreement(agreement_id, &caller);
+    }
+
+    /**
+     *  Subscribe to an agreement, only allowed to subscribe as sender to RecurringPayoutToReceive and TimeBoundPayoutToReceive
+     */
+    #[endpoint(signAgreement)]
+    fn sign_agreement_with_amount(&self, agreement_id: u64, amount: BigInt<Self::Api>) {
+        self.require_existing_agreement_id(agreement_id);
         let agreement = self.agreement_by_id(agreement_id).get();
-        let timestamp = self.blockchain().get_block_timestamp();
         match agreement.agreement_type {
-            AgreementType::RecurringPayoutToReceive {..} => {},
+            AgreementType::RecurringPayoutToReceive {amount_type, ..} => {
+                match amount_type {
+                    PayoutToReceiveAmountType::SubscriberDefinedAmount => {},
+                    _ => panic!("You cannot sign this agreement with amount, use signAgreement instead")
+                }
+            },
 
             AgreementType::TimeBoundPayoutToReceive {..} => {},
 
-            _ => panic!("You cannot sign this agreement.")
+            _ => panic!("You cannot sign this agreement type.")
         }
+
+        let caller = self.blockchain().get_caller();
+
+        self.require_agreement_not_created_by_account(&caller, agreement_id);
+        self.require_agreement_not_signed_by_account(agreement_id, &caller);
+
+        self.agreement_subscriber_defined_amount(agreement_id, &caller).set(amount);
+
+        self.set_storage_for_sign_agreement(agreement_id, &caller);
+        
+    }
+
+    #[inline]
+    fn set_storage_for_sign_agreement(&self, agreement_id: u64, caller: &ManagedAddress<Self::Api>) {
+        let timestamp = self.blockchain().get_block_timestamp();
 
         self.agreement_all_senders(agreement_id).insert(caller.clone());
         self.agreement_current_senders(agreement_id).insert(caller.clone());
@@ -219,7 +260,7 @@ pub trait AgreementV2Module:
             token_identifier,
 
             agreement_type,
-            claimed_amount: BigUint::zero()
+            total_transfered_amount: BigUint::zero()
         };
 
         self.agreement_ids().insert(agreement_number);

@@ -3,8 +3,6 @@ multiversx_sc::derive_imports!();
 
 #[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, TypeAbi)]
 pub enum FrequencyType {
-    SECOND,
-    MINUTE,
     HOUR,
     DAY,
     WEEK,
@@ -83,5 +81,27 @@ pub struct Agreement<M: ManagedTypeApi> {
     pub token_nonce: u64,
 
     pub agreement_type: AgreementType<M>,
-    pub claimed_amount: BigUint<M>, // Total claimed so far
+    pub total_transfered_amount: BigUint<M>, // Total amount transactioned so far through this agreement
+}
+
+#[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, PartialEq, Eq, TypeAbi, Clone)]
+pub enum AgreementTransferStatus {
+    SUCCESS,
+    FAILED
+}
+
+
+#[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, PartialEq, Eq, TypeAbi, Clone)]
+pub enum AgreementTransferReason {
+    InsufficientFunds
+}
+
+
+
+#[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, TypeAbi)]
+pub struct AgreementTransfer<M: ManagedTypeApi> {
+    amount: BigUint<M>,
+    transfer_time: u64,
+    status: AgreementTransferStatus,
+    reason: Option<AgreementTransferReason>
 }
