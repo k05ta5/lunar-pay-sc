@@ -48,7 +48,7 @@ pub trait ChargesModule:
     fn charge_agreement_sender(&self, agreement: &Agreement<Self::Api>, sender: &ManagedAddress<Self::Api>) {
         let timestamp = self.blockchain().get_block_timestamp();
         let last_charge_time = self.calculate_agreement_sender_last_charge_time(agreement.id, &sender, &agreement.creator);
-        let sender_sign_time= return self.agreement_sender_sign_time(agreement.id, &sender).get();
+        let sender_sign_time = self.agreement_sender_sign_time(agreement.id, &sender).get();
         let mut amount_to_transfer = BigUint::zero();
 
         match agreement.agreement_type {
@@ -79,22 +79,8 @@ pub trait ChargesModule:
             _ => panic!("You cannot charge tokens for this agreement")
         }
 
-        let amount_to_transfer = self.calculate_agreement_sender_amount_to_charge(&agreement, &sender);
+        // TODO: do the transfer if enough amount and save charge with amount and timestamp
 
-        // TODO: do the transfer if enough amount and save charge with amount and timestamp as failed or success
-
-        self.agreement_sender_transfer_charge_time(agreement.id, &sender).set(timestamp)
-
-    }
-
-    // TODO: implement this
-    #[inline]
-    fn calculate_agreement_sender_amount_to_charge(&self, agreement: &Agreement<Self::Api>, sender: &ManagedAddress<Self::Api>) -> BigUint {
-        let mut amount_to_transfer = BigUint::zero();
-        match agreement.agreement_type.amount_type {
-            
-        }
-        return BigUint::zero();
     }
 
     #[inline]
