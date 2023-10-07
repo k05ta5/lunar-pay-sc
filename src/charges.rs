@@ -1,13 +1,17 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::types::{Agreement, AgreementAmountType, AgreementType, FrequencyType};
+use crate::types::{Agreement, AgreementType, FrequencyType};
 
 #[multiversx_sc::module]
 pub trait ChargesModule:
     crate::storage::StorageModule +
     crate::validation::ValidationModule
 {
+    /**
+     * Charge all the senders from one agreement
+     * Endpoint can be called only by owner for RecurringPayoutToReceive and TimeBoundPayoutToReceive
+     */
     #[endpoint(chargeAgreementSenders)]
     fn charge_agreement_senders(&self, agreement_id: u64) {
         self.require_existing_agreement_id(agreement_id);

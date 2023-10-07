@@ -1,7 +1,13 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::types::{Agreement, AgreementAmountType, AgreementType, FrequencyType};
+use crate::types::{
+    Agreement,
+    RecurringPayoutToSendAmountType,
+    PayoutToReceiveAmountType,
+    AgreementType,
+    FrequencyType
+};
 
 #[multiversx_sc::module]
 pub trait AgreementV2Module:
@@ -13,7 +19,7 @@ pub trait AgreementV2Module:
     fn create_recurring_payment_agreement_to_send(
         &self,
         token_identifier: EgldOrEsdtTokenIdentifier<Self::Api>,
-        amount_type: AgreementAmountType<Self::Api>,
+        amount_type: RecurringPayoutToSendAmountType<Self::Api>,
         frequency: FrequencyType,
         _whitelisted_addresses: Option<ManagedVec<ManagedAddress<Self::Api>>>
     ) {
@@ -33,7 +39,7 @@ pub trait AgreementV2Module:
     fn create_recurring_payment_agreement_to_receive(
         &self,
         token_identifier: EgldOrEsdtTokenIdentifier<Self::Api>,
-        amount_type: AgreementAmountType<Self::Api>,
+        amount_type: PayoutToReceiveAmountType<Self::Api>,
         frequency: FrequencyType,
         _whitelisted_addresses: Option<ManagedVec<ManagedAddress<Self::Api>>>
     ) {
@@ -149,14 +155,10 @@ pub trait AgreementV2Module:
 
         match _agreement.agreement_type {
             // Claim tokens for an agreement that this account is a receiver of **/
-            AgreementType::RecurringPayoutToSend {..} => {
-                self.require_agreement_signed_by_account(agreement_id, &caller);
-            },
+            AgreementType::RecurringPayoutToSend {..} => {},
 
             // Claim tokens for an agreement that this account is a receiver of **/
-            AgreementType::TimeBoundPayoutToSend {..} => {
-                self.require_agreement_signed_by_account(agreement_id, &caller);
-            },
+            AgreementType::TimeBoundPayoutToSend {..} => {},
 
             _ => panic!("You cannot claim tokens for this agreement")
         }

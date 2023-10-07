@@ -37,3 +37,4 @@ Using the following command, you will deploy the smart contract on testnet with 
 ```bash
 mxpy contract deploy
 ```
+

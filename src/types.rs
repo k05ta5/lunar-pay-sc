@@ -26,39 +26,48 @@ pub enum AmountType<M: ManagedTypeApi> {
 }
 
 #[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, PartialEq, Eq, TypeAbi, Clone)]
-pub enum AgreementAmountType<M: ManagedTypeApi> {
-    AnyAmount,
+pub enum RecurringPayoutToSendAmountType<M: ManagedTypeApi> {
     FixedAmount(BigUint<M>),
-    BoundedAmount(BoundedAmount<M>),
-    SubscriberDefinedAmount,
     CreatorDefinedAmountPerSubscriber,
+}
+
+#[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, PartialEq, Eq, TypeAbi, Clone)]
+pub enum PayoutToReceiveAmountType<M: ManagedTypeApi> {
+    FixedAmount(BigUint<M>),
+    SubscriberDefinedAmount,
+}
+
+#[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, PartialEq, Eq, TypeAbi, Clone)]
+pub enum TimeBoundPayoutToSendAmountType<M: ManagedTypeApi> {
+    FixedAmount(BigUint<M>),
+    CreatorDefinedAmountPerSubscriber,
+    BoundedAmount(BoundedAmount<M>) // will be used in claim with amount
 }
 
 #[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, TypeAbi)]
 pub enum AgreementType<M: ManagedTypeApi> {
     RecurringPayoutToSend {
         sender: ManagedAddress<M>,
-        // receivers: ManagedVec<M, ManagedAddress<M>>,
-        amount_type: AgreementAmountType<M>,
+        amount_type: RecurringPayoutToSendAmountType<M>,
         frequency: FrequencyType,
     },
     RecurringPayoutToReceive {
         receiver: ManagedAddress<M>,
-        // senders: ManagedVec<M, ManagedAddress<M>>,
-        amount_type: AgreementAmountType<M>,
+        amount_type: PayoutToReceiveAmountType<M>,
 
         frequency: FrequencyType,
     },
+    // Only for current period can be claimed
     TimeBoundPayoutToSend {
         sender: ManagedAddress<M>,
-        // receivers: ManagedVec<M, ManagedAddress<M>>,
-        amount_type: AgreementAmountType<M>,
+        amount_type: TimeBoundPayoutToSendAmountType<M>,
 
         frequency: FrequencyType,
     },
+    // Only for current period can be charged
     TimeBoundPayoutToReceive {
         receiver: ManagedAddress<M>,
-        // senders: ManagedVec<M, ManagedAddress<M>>,
+        amount_type: PayoutToReceiveAmountType<M>,
 
         frequency: FrequencyType,
     }

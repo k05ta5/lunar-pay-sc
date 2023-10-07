@@ -311,7 +311,7 @@
                 },
                 {
                     "name": "amount_type",
-                    "type": "AgreementAmountType"
+                    "type": "RecurringPayoutToSendAmountType"
                 },
                 {
                     "name": "frequency",
@@ -334,7 +334,7 @@
                 },
                 {
                     "name": "amount_type",
-                    "type": "AgreementAmountType"
+                    "type": "PayoutToReceiveAmountType"
                 },
                 {
                     "name": "frequency",
@@ -387,6 +387,9 @@
             "outputs": []
         },
         {
+            "docs": [
+                "\\n     * Charge all the senders from one agreement\\n     * Endpoint can be called only by owner for RecurringPayoutToReceive and TimeBoundPayoutToReceive\\n     "
+            ],
             "name": "chargeAgreementSenders",
             "mutability": "mutable",
             "inputs": [
@@ -499,43 +502,6 @@
     ],
     "hasCallback": false,
     "types": {
-        "AgreementAmountType": {
-            "type": "enum",
-            "variants": [
-                {
-                    "name": "AnyAmount",
-                    "discriminant": 0
-                },
-                {
-                    "name": "FixedAmount",
-                    "discriminant": 1,
-                    "fields": [
-                        {
-                            "name": "0",
-                            "type": "BigUint"
-                        }
-                    ]
-                },
-                {
-                    "name": "BoundedAmount",
-                    "discriminant": 2,
-                    "fields": [
-                        {
-                            "name": "0",
-                            "type": "BoundedAmount"
-                        }
-                    ]
-                },
-                {
-                    "name": "SubscriberDefinedAmount",
-                    "discriminant": 3
-                },
-                {
-                    "name": "CreatorDefinedAmountPerSubscriber",
-                    "discriminant": 4
-                }
-            ]
-        },
         "AmountType": {
             "type": "enum",
             "variants": [
@@ -608,6 +574,44 @@
                 {
                     "name": "YEAR",
                     "discriminant": 6
+                }
+            ]
+        },
+        "PayoutToReceiveAmountType": {
+            "type": "enum",
+            "variants": [
+                {
+                    "name": "FixedAmount",
+                    "discriminant": 0,
+                    "fields": [
+                        {
+                            "name": "0",
+                            "type": "BigUint"
+                        }
+                    ]
+                },
+                {
+                    "name": "SubscriberDefinedAmount",
+                    "discriminant": 1
+                }
+            ]
+        },
+        "RecurringPayoutToSendAmountType": {
+            "type": "enum",
+            "variants": [
+                {
+                    "name": "FixedAmount",
+                    "discriminant": 0,
+                    "fields": [
+                        {
+                            "name": "0",
+                            "type": "BigUint"
+                        }
+                    ]
+                },
+                {
+                    "name": "CreatorDefinedAmountPerSubscriber",
+                    "discriminant": 1
                 }
             ]
         }
