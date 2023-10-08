@@ -98,7 +98,7 @@
             ],
             "outputs": [
                 {
-                    "type": "AmountType"
+                    "type": "BigUint"
                 }
             ]
         },
@@ -363,6 +363,24 @@
         },
         {
             "docs": [
+                "\\n     *  Subscribe to an agreement, only allowed to subscribe as sender to RecurringPayoutToReceive and TimeBoundPayoutToReceive\\n     "
+            ],
+            "name": "signAgreementWithAmount",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "agreement_id",
+                    "type": "u64"
+                },
+                {
+                    "name": "amount",
+                    "type": "BigUint"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "docs": [
                 "\\n     * Unsubscribe from an agreement, only allowed to unsubscribe as sender from RecurringPayoutToReceive and TimeBoundPayoutToReceive\\n     "
             ],
             "name": "cancelAgreement",
@@ -502,78 +520,28 @@
     ],
     "hasCallback": false,
     "types": {
-        "AmountType": {
-            "type": "enum",
-            "variants": [
-                {
-                    "name": "AnyAmount",
-                    "discriminant": 0
-                },
-                {
-                    "name": "FixedAmount",
-                    "discriminant": 1,
-                    "fields": [
-                        {
-                            "name": "0",
-                            "type": "BigUint"
-                        }
-                    ]
-                },
-                {
-                    "name": "BoundedAmount",
-                    "discriminant": 2,
-                    "fields": [
-                        {
-                            "name": "0",
-                            "type": "BoundedAmount"
-                        }
-                    ]
-                }
-            ]
-        },
-        "BoundedAmount": {
-            "type": "struct",
-            "fields": [
-                {
-                    "name": "minimum_amount",
-                    "type": "BigUint"
-                },
-                {
-                    "name": "maximum_amount",
-                    "type": "BigUint"
-                }
-            ]
-        },
         "FrequencyType": {
             "type": "enum",
             "variants": [
                 {
-                    "name": "SECOND",
+                    "name": "HOUR",
                     "discriminant": 0
                 },
                 {
-                    "name": "MINUTE",
+                    "name": "DAY",
                     "discriminant": 1
                 },
                 {
-                    "name": "HOUR",
+                    "name": "WEEK",
                     "discriminant": 2
                 },
                 {
-                    "name": "DAY",
+                    "name": "MONTH",
                     "discriminant": 3
                 },
                 {
-                    "name": "WEEK",
-                    "discriminant": 4
-                },
-                {
-                    "name": "MONTH",
-                    "discriminant": 5
-                },
-                {
                     "name": "YEAR",
-                    "discriminant": 6
+                    "discriminant": 4
                 }
             ]
         },

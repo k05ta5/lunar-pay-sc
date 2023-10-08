@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           26
+// Endpoints:                           27
 // Async Callback (empty):               1
-// Total number of exported functions:  28
+// Total number of exported functions:  29
 
 #![no_std]
 
@@ -45,6 +45,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         createRecuringPaymentAgreementToSend => create_recurring_payment_agreement_to_send
         createRecuringPaymentAgreementToReceive => create_recurring_payment_agreement_to_receive
         signAgreement => sign_agreement
+        signAgreementWithAmount => sign_agreement_with_amount
         cancelAgreement => cancel_agreement
         claimAgreement => claim_agreement
         chargeAgreementSenders => charge_agreement_senders

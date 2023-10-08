@@ -116,8 +116,8 @@ pub trait AgreementV2Module:
     /**
      *  Subscribe to an agreement, only allowed to subscribe as sender to RecurringPayoutToReceive and TimeBoundPayoutToReceive
      */
-    #[endpoint(signAgreement)]
-    fn sign_agreement_with_amount(&self, agreement_id: u64, amount: BigInt<Self::Api>) {
+    #[endpoint(signAgreementWithAmount)]
+    fn sign_agreement_with_amount(&self, agreement_id: u64, amount: BigUint) {
         self.require_existing_agreement_id(agreement_id);
         let agreement = self.agreement_by_id(agreement_id).get();
         match agreement.agreement_type {

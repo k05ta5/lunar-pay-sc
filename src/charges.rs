@@ -51,7 +51,7 @@ pub trait ChargesModule:
         let sender_sign_time = self.agreement_sender_sign_time(agreement.id, &sender).get();
         let mut amount_to_transfer = BigUint::zero();
 
-        match agreement.agreement_type {
+        match &agreement.agreement_type {
             // Charge the sender(s) of an agreement that this account created
             AgreementType::RecurringPayoutToReceive {amount_type, frequency, ..} => {
 
@@ -61,13 +61,13 @@ pub trait ChargesModule:
             // Charge the sender(s) of an agreement that this account created **/
             AgreementType::TimeBoundPayoutToReceive {amount_type, frequency, ..} => {
                 let frequency_seconds = self.calculate_frequency_seconds(frequency);
-                let charge_periods_count = ((timestamp - sender_sign_time) / frequency_seconds).floor();
+                let charge_periods_count = (timestamp - sender_sign_time).checked_div(frequency_seconds).unwrap();
                 let last_charge_period_end_timestamp = sender_sign_time + (frequency_seconds * charge_periods_count);
 
                 if timestamp > last_charge_period_end_timestamp && last_charge_time <= last_charge_period_end_timestamp {
-                    match amount_type {
+                    match &amount_type {
                         PayoutToReceiveAmountType::FixedAmount(amount) => {
-                            amount_to_transfer = amount;
+                            amount_to_transfer = amount.clone();
                         },
                         PayoutToReceiveAmountType::SubscriberDefinedAmount => {
                             amount_to_transfer = self.agreement_subscriber_defined_amount(agreement.id, &sender).get();
@@ -94,8 +94,8 @@ pub trait ChargesModule:
     }
 
     #[inline]
-    fn calculate_frequency_seconds(&self, frequency: FrequencyType) -> u64 {
-        match frequency {
+    fn calculate_frequency_seconds(&self, frequency: &FrequencyType) -> u64 {
+        match &frequency {
             FrequencyType::HOUR => 3600,  
             FrequencyType::DAY => 3600 * 24,     // 1 day = 86400 seconds
             FrequencyType::WEEK => 3600 * 24 * 7,   // 1 week = 604800 seconds
