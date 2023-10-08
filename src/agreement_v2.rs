@@ -53,7 +53,7 @@ pub trait AgreementV2Module:
             frequency: frequency,
         };
 
-        let agreement = self.create_recurring_agreement(
+        self.create_recurring_agreement(
             &caller,
             agreement_type,
             token_identifier,
