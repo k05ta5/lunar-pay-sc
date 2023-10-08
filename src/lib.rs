@@ -23,10 +23,10 @@ pub trait LunarPay:
 
     account::AccountModule +
     protocol::ProtocolModule +
+    charges::ChargesModule +
     transfers::TransfersModule +
     // agreement::AgreementModule +
-    agreement_v2::AgreementV2Module +
-    charges::ChargesModule
+    agreement_v2::AgreementV2Module
 {
     #[init]
     fn init(&self) {}

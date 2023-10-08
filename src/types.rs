@@ -93,15 +93,16 @@ pub enum AgreementTransferStatus {
 
 #[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, PartialEq, Eq, TypeAbi, Clone)]
 pub enum AgreementTransferReason {
-    InsufficientFunds
+    InsufficientFunds,
+    None
 }
 
 
 
-#[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, TypeAbi)]
+#[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, PartialEq, Eq, TypeAbi, Clone)]
 pub struct AgreementTransfer<M: ManagedTypeApi> {
-    amount: BigUint<M>,
-    transfer_time: u64,
-    status: AgreementTransferStatus,
-    reason: Option<AgreementTransferReason>
+    pub amount: BigUint<M>,
+    pub transfer_time: u64,
+    pub status: AgreementTransferStatus,
+    pub reason: AgreementTransferReason
 }

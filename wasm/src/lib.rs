@@ -41,6 +41,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         removeWhitelistedToken => remove_whitelisted_token
         whitelistAddress => whitelist_address
         removeWhitelistedAddress => reomve_whitelisted_address
+        chargeAgreementSenders => charge_agreement_senders
         transferTokens => transfer
         createRecuringPaymentAgreementToSend => create_recurring_payment_agreement_to_send
         createRecuringPaymentAgreementToReceive => create_recurring_payment_agreement_to_receive
@@ -48,7 +49,6 @@ multiversx_sc_wasm_adapter::endpoints! {
         signAgreementWithAmount => sign_agreement_with_amount
         cancelAgreement => cancel_agreement
         claimAgreement => claim_agreement
-        chargeAgreementSenders => charge_agreement_senders
     )
 }
 

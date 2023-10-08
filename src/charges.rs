@@ -6,6 +6,7 @@ use crate::types::{Agreement, AgreementType, FrequencyType, PayoutToReceiveAmoun
 #[multiversx_sc::module]
 pub trait ChargesModule:
     crate::storage::StorageModule +
+    crate::transfers::TransfersModule +
     crate::validation::ValidationModule
 {
     /**
@@ -54,8 +55,27 @@ pub trait ChargesModule:
         match &agreement.agreement_type {
             // Charge the sender(s) of an agreement that this account created
             AgreementType::RecurringPayoutToReceive {amount_type, frequency, ..} => {
+                let frequency_seconds = self.calculate_frequency_seconds(frequency);
+                let charge_periods_count = (timestamp - sender_sign_time).checked_div(frequency_seconds).unwrap();
+                let already_charged_period_counts = (last_charge_time - sender_sign_time).checked_div(frequency_seconds).unwrap();
+                
+                let mut to_charge_times = charge_periods_count - already_charged_period_counts;
 
+                let last_charge_period_end_timestamp = sender_sign_time + (frequency_seconds * charge_periods_count);
+                if timestamp > last_charge_period_end_timestamp && last_charge_time <= last_charge_period_end_timestamp {
+                    to_charge_times += 1;
+                }
 
+                if to_charge_times > 0 {
+                    match &amount_type {
+                        PayoutToReceiveAmountType::FixedAmount(amount) => {
+                            amount_to_transfer = amount.clone() * to_charge_times;
+                        },
+                        PayoutToReceiveAmountType::SubscriberDefinedAmount => {
+                            amount_to_transfer = self.agreement_subscriber_defined_amount(agreement.id, &sender).get() * to_charge_times;
+                        }
+                    }
+                }
             },
 
             // Charge the sender(s) of an agreement that this account created **/
@@ -79,7 +99,16 @@ pub trait ChargesModule:
             _ => panic!("You cannot charge tokens for this agreement")
         }
 
-        // TODO: do the transfer if enough amount and save charge with amount and timestamp
+        if amount_to_transfer > 0 {
+            self.do_agreement_transfer_and_update_balances(
+                agreement.id,
+                &sender,
+                &agreement.creator,
+                &agreement.token_identifier,
+                &amount_to_transfer,
+                timestamp
+            );
+        }
 
     }
 

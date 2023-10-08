@@ -283,6 +283,20 @@
             "outputs": []
         },
         {
+            "docs": [
+                "\\n     * Charge all the senders from one agreement\\n     * Endpoint can be called only by owner for RecurringPayoutToReceive and TimeBoundPayoutToReceive\\n     "
+            ],
+            "name": "chargeAgreementSenders",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "agreement_id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
             "name": "transferTokens",
             "mutability": "mutable",
             "inputs": [
@@ -395,20 +409,6 @@
         },
         {
             "name": "claimAgreement",
-            "mutability": "mutable",
-            "inputs": [
-                {
-                    "name": "agreement_id",
-                    "type": "u64"
-                }
-            ],
-            "outputs": []
-        },
-        {
-            "docs": [
-                "\\n     * Charge all the senders from one agreement\\n     * Endpoint can be called only by owner for RecurringPayoutToReceive and TimeBoundPayoutToReceive\\n     "
-            ],
-            "name": "chargeAgreementSenders",
             "mutability": "mutable",
             "inputs": [
                 {

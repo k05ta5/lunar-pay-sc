@@ -11,8 +11,9 @@ use crate::types::{
 
 #[multiversx_sc::module]
 pub trait AgreementV2Module:
-    crate::charges::ChargesModule +
     crate::storage::StorageModule +
+    crate::transfers::TransfersModule +
+    crate::charges::ChargesModule +
     crate::validation::ValidationModule
 {
     #[endpoint(createRecuringPaymentAgreementToSend)]
