@@ -362,8 +362,54 @@
             "outputs": []
         },
         {
+            "name": "createTimeBoundPaymentAgreementToSend",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "token_identifier",
+                    "type": "EgldOrEsdtTokenIdentifier"
+                },
+                {
+                    "name": "amount_type",
+                    "type": "TimeBoundPayoutToSendAmountType"
+                },
+                {
+                    "name": "frequency",
+                    "type": "FrequencyType"
+                },
+                {
+                    "name": "_whitelisted_addresses",
+                    "type": "Option<List<Address>>"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "createTimeBoundPaymentAgreementToReceive",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "token_identifier",
+                    "type": "EgldOrEsdtTokenIdentifier"
+                },
+                {
+                    "name": "amount_type",
+                    "type": "PayoutToReceiveAmountType"
+                },
+                {
+                    "name": "frequency",
+                    "type": "FrequencyType"
+                },
+                {
+                    "name": "_whitelisted_addresses",
+                    "type": "Option<List<Address>>"
+                }
+            ],
+            "outputs": []
+        },
+        {
             "docs": [
-                "\\n     *  Subscribe to an agreement, only allowed to subscribe as sender to RecurringPayoutToReceive and TimeBoundPayoutToReceive\\n     "
+                "\\n     *  Subscribe to an agreement, allowed to subscribe as sender to RecurringPayoutToReceive and TimeBoundPayoutToReceive\\n     "
             ],
             "name": "signAgreement",
             "mutability": "mutable",
@@ -398,17 +444,6 @@
                 "\\n     * Unsubscribe from an agreement, only allowed to unsubscribe as sender from RecurringPayoutToReceive and TimeBoundPayoutToReceive\\n     "
             ],
             "name": "cancelAgreement",
-            "mutability": "mutable",
-            "inputs": [
-                {
-                    "name": "agreement_id",
-                    "type": "u64"
-                }
-            ],
-            "outputs": []
-        },
-        {
-            "name": "claimAgreement",
             "mutability": "mutable",
             "inputs": [
                 {
@@ -520,6 +555,19 @@
     ],
     "hasCallback": false,
     "types": {
+        "BoundedAmount": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "minimum_amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "maximum_amount",
+                    "type": "BigUint"
+                }
+            ]
+        },
         "FrequencyType": {
             "type": "enum",
             "variants": [
@@ -580,6 +628,35 @@
                 {
                     "name": "CreatorDefinedAmountPerSubscriber",
                     "discriminant": 1
+                }
+            ]
+        },
+        "TimeBoundPayoutToSendAmountType": {
+            "type": "enum",
+            "variants": [
+                {
+                    "name": "FixedAmount",
+                    "discriminant": 0,
+                    "fields": [
+                        {
+                            "name": "0",
+                            "type": "BigUint"
+                        }
+                    ]
+                },
+                {
+                    "name": "CreatorDefinedAmountPerSubscriber",
+                    "discriminant": 1
+                },
+                {
+                    "name": "BoundedAmount",
+                    "discriminant": 2,
+                    "fields": [
+                        {
+                            "name": "0",
+                            "type": "BoundedAmount"
+                        }
+                    ]
                 }
             ]
         }

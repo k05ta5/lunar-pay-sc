@@ -74,20 +74,24 @@ pub trait StorageModule {
     #[storage_mapper("agreement_whitelist")]
     fn agreement_whitelist(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
 
-    #[storage_mapper("agreement_senders")]
-    fn agreement_current_senders(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+    // For the ones in the receiving way these will be senders and for the ones in the sending way these will be receivers
+    #[storage_mapper("agreement_signers")]
+    fn agreement_current_signers(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
 
-    /** Stores all senders from an agreement, even the ones that canceled **/
-    #[storage_mapper("agreement_all_senders")]
-    fn agreement_all_senders(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+    /**
+     * Stores all signers from an agreement, even the ones that canceled
+     * For the ones in the receiving way these will be senders and for the ones in the sending way these will be receivers
+    **/
+    #[storage_mapper("agreement_all_signers")]
+    fn agreement_all_signers(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
 
-    // Stores the time when a sender signed an agreement
-    #[storage_mapper("agreement_sender_sign_time")]
-    fn agreement_sender_sign_time(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
+    // Stores the time when a signer signed an agreement
+    #[storage_mapper("agreement_signer_sign_time")]
+    fn agreement_signer_sign_time(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
 
-    // Stores the time when a sender canceled an agreement
-    #[storage_mapper("agreement_sender_cancel_time")]
-    fn agreement_sender_cancel_time(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
+    // Stores the time when a signer canceled an agreement
+    #[storage_mapper("agreement_signer_cancel_time")]
+    fn agreement_signer_cancel_time(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
 
     // Stores all agreement transfers for one sender, for those agreements with only one sender it will behave as agreement transfers as well
     #[storage_mapper("agreement_sender_transfers")]
@@ -100,9 +104,6 @@ pub trait StorageModule {
     // Last transfer time betweek a sender and a receiver for a specific agreement, can be used for all agreements types
     #[storage_mapper("agreement_last_successful_transfer_time")]
     fn agreement_last_successful_transfer_time(&self, agreement_id: u64, sender: &ManagedAddress, receiver: &ManagedAddress) -> SingleValueMapper<u64>;
-
-    #[storage_mapper("agreement_receivers")]
-    fn agreement_receivers(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
 
     /** Stores all the agreement IDs that belong to an account **/
     #[view(getAccountCreatedAgreementsListByAddress)]

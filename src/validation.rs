@@ -17,6 +17,20 @@ pub trait ValidationModule:
         require!(self.is_address_whitelisted(address), "Address is not whitelisted");
     }
 
+    fn is_address_whitelisted_for_agreement(&self, address: &ManagedAddress<Self::Api>, agreement_id: u64) -> bool {
+        let whitelist_enabled = self.agreement_whitelist_enabled(agreement_id);
+        if !whitelist_enabled.is_empty() && whitelist_enabled.get() == true {
+            return self.agreement_whitelist(agreement_id).contains(&address);
+        }
+
+        // If whitelist is not enabled then everyone is whitelisted
+        return true
+    }
+
+    fn require_address_is_whitelisted_for_agreeement(&self, address: &ManagedAddress, agreement_id: u64) {
+        require!(self.is_address_whitelisted_for_agreement(address, agreement_id), "Address is not whitelisted for this agreement");
+    }
+
     fn account_has_sufficient_balance(
         &self,
         account: &ManagedAddress,
@@ -54,7 +68,7 @@ pub trait ValidationModule:
     }
 
     fn is_agreement_signed_by_account(&self, agreement_id: u64, account: &ManagedAddress) -> bool {
-        self.agreement_current_senders(agreement_id).contains(account)
+        self.agreement_current_signers(agreement_id).contains(account)
     }
 
     fn require_agreement_signed_by_account(&self, agreement_id: u64, account: &ManagedAddress) {

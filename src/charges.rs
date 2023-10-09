@@ -34,7 +34,7 @@ pub trait ChargesModule:
             _ => panic!("You cannot charge tokens for this agreement")
         }
 
-        let senders = self.agreement_current_senders(agreement_id);
+        let senders = self.agreement_current_signers(agreement_id);
         if senders.is_empty() {
             panic!("You have no senders for this agreement");
         }
@@ -49,7 +49,7 @@ pub trait ChargesModule:
     fn charge_agreement_sender(&self, agreement: &Agreement<Self::Api>, sender: &ManagedAddress<Self::Api>) {
         let timestamp = self.blockchain().get_block_timestamp();
         let last_charge_time = self.calculate_agreement_sender_last_charge_time(agreement.id, &sender, &agreement.creator);
-        let sender_sign_time = self.agreement_sender_sign_time(agreement.id, &sender).get();
+        let sender_sign_time = self.agreement_signer_sign_time(agreement.id, &sender).get();
         let mut amount_to_transfer = BigUint::zero();
 
         match &agreement.agreement_type {
@@ -116,7 +116,7 @@ pub trait ChargesModule:
     fn calculate_agreement_sender_last_charge_time(&self, agreement_id: u64, sender: &ManagedAddress<Self::Api>, receiver: &ManagedAddress<Self::Api>) -> u64 {
         let last_charge_time = self.agreement_last_successful_transfer_time(agreement_id, &sender, &receiver);
         if last_charge_time.is_empty() {
-            return self.agreement_sender_sign_time(agreement_id, &sender).get()
+            return self.agreement_signer_sign_time(agreement_id, &sender).get()
         }
 
         return last_charge_time.get()
