@@ -1,5 +1,5 @@
 [package]
-name = "lunar-pay-meta"
+name = "lunarpay-meta"
 version = "0.0.1"
 edition = "2018"
 publish = false
@@ -7,7 +7,7 @@ authors = [ "contact@esdt.space",]
 
 [dev-dependencies]
 
-[dependencies.lunar-pay]
+[dependencies.lunarpay]
 path = ".."
 
 [dependencies.multiversx-sc-meta]

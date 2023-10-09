@@ -9,6 +9,10 @@ pub trait ValidationModule:
         return self.whitelisted_token_ids().contains(&token)
     }
 
+    fn require_token_is_whitelisted(&self, token: &EgldOrEsdtTokenIdentifier<Self::Api>) {
+        require!(self.is_token_whitelisted(token), "Token is not whitelisted");
+    }
+
     fn is_address_whitelisted(&self, address: &ManagedAddress<Self::Api>) -> bool {
         return self.whitelisted_addresses().contains(&address)
     }

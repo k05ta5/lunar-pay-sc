@@ -1,7 +1,7 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::types::{AgreementTransfer, AgreementTransferStatus, AgreementTransferReason};
+use crate::types::{AgreementTransferStatus, AgreementTransferReason};
 
 #[multiversx_sc::module]
 pub trait TransfersModule:
@@ -33,37 +33,37 @@ pub trait TransfersModule:
     #[inline]
     fn do_agreement_transfer_and_update_balances(
         &self,
-        agreement_id: u64,
         sender: &ManagedAddress<Self::Api>,
         receiver: &ManagedAddress<Self::Api>,
         token: &EgldOrEsdtTokenIdentifier,
         amount: &BigUint,
-        time: u64
     ) -> bool {
-        if !self.account_has_sufficient_balance(&sender, &token, &amount.clone()) {
-            let transfer = AgreementTransfer {
-                amount: amount.clone(),
-                transfer_time: time.clone(),
-                status: AgreementTransferStatus::FAILED,
-                reason: AgreementTransferReason::InsufficientFunds
-            };
-            
-            self.agreement_sender_transfers(agreement_id, &sender).insert(transfer.clone());
-            self.agreement_receiver_transfers(agreement_id, &receiver).insert(transfer.clone());
-            return false;
-        }
+        self.require_account_has_sufficient_balance(&sender, &token, &amount.clone());
+
+        // if !self.account_has_sufficient_balance(&sender, &token, &amount.clone()) {
+        //     let transfer = AgreementTransfer {
+        //         amount: amount.clone(),
+        //         transfer_time: time.clone(),
+        //         status: AgreementTransferStatus::FAILED,
+        //         reason: AgreementTransferReason::InsufficientFunds
+        //     };
+        //
+        //     self.agreement_sender_transfers(agreement_id, &sender).insert(transfer.clone());
+        //     self.agreement_receiver_transfers(agreement_id, &receiver).insert(transfer.clone());
+        //     return false;
+        // }
 
         self.account_balance(&sender, &token).update(|balance| *balance -= &amount.clone());
         self.account_balance(&receiver, &token).update(|balance| *balance += &amount.clone());
-        let transfer = AgreementTransfer {
-            amount: amount.clone(),
-            transfer_time: time.clone(),
-            status: AgreementTransferStatus::SUCCESS,
-            reason: AgreementTransferReason::None
-        };
-        self.agreement_sender_transfers(agreement_id, &sender).insert(transfer.clone());
-        self.agreement_receiver_transfers(agreement_id, &receiver).insert(transfer.clone());
-        self.agreement_last_successful_transfer_time(agreement_id, &sender, &receiver).set(time.clone());
+        // let transfer = AgreementTransfer {
+        //     amount: amount.clone(),
+        //     transfer_time: time.clone(),
+        //     status: AgreementTransferStatus::SUCCESS,
+        //     reason: AgreementTransferReason::None
+        // };
+        // self.agreement_sender_transfers(agreement_id, &sender).insert(transfer.clone());
+        // self.agreement_receiver_transfers(agreement_id, &receiver).insert(transfer.clone());
+        // self.agreement_last_successful_transfer_time(agreement_id, &sender, &receiver).set(time.clone());
         return true;
     }
 }

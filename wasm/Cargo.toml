@@ -1,5 +1,5 @@
 [package]
-name = "lunar-pay-wasm"
+name = "lunarpay-wasm"
 version = "0.0.0"
 authors = [ "contact@esdt.space",]
 edition = "2018"
@@ -20,7 +20,7 @@ lto = true
 debug = false
 panic = "abort"
 
-[dependencies.lunar-pay]
+[dependencies.lunarpay]
 path = ".."
 
 [dependencies.multiversx-sc-wasm-adapter]

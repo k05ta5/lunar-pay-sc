@@ -1,7 +1,7 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::types::{Agreement, AmountType, AgreementTransfer};
+use crate::types::{Agreement, Amount};
 
 #[multiversx_sc::module]
 pub trait StorageModule {
@@ -58,14 +58,6 @@ pub trait StorageModule {
     #[storage_mapper("agreement_by_id")]
     fn agreement_by_id(&self, agreement_id: u64) -> SingleValueMapper<Agreement<Self::Api>>;
 
-    #[view(agreement_subscriber_defined_amount)]
-    #[storage_mapper("agreement_subscriber_defined_amount")]
-    fn agreement_subscriber_defined_amount(&self, aggreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<BigUint<Self::Api>>;
-
-    // #[view(getAgreementCreatorDefinedAmountPerSubscriber)]
-    #[storage_mapper("agreement_creator_defined_amount_per_subscriber")]
-    fn agreement_creator_defined_amount_per_subscriber(&self, aggreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<AmountType<Self::Api>>;
-
     #[view(getAgreementWhitelistEnabled)]
     #[storage_mapper("agreement_whitelist_enabled")]
     fn agreement_whitelist_enabled(&self, agreement_id: u64) -> SingleValueMapper<bool>;
@@ -74,35 +66,27 @@ pub trait StorageModule {
     #[storage_mapper("agreement_whitelist")]
     fn agreement_whitelist(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
 
-    #[storage_mapper("agreement_senders")]
-    fn agreement_current_senders(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+    /** Stores all the accounts for an agreement, even the ones that canceled. It acts as senders or receivers list **/
+    #[storage_mapper("agreement_accounts")]
+    fn agreement_accounts(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
 
-    /** Stores all senders from an agreement, even the ones that canceled **/
-    #[storage_mapper("agreement_all_senders")]
-    fn agreement_all_senders(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+    /** Stores the currnet accounts for an agreement. It acts as senders or receivers list **/
+    #[storage_mapper("agreement_current_accounts")]
+    fn agreement_current_accounts(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
 
     // Stores the time when a sender signed an agreement
-    #[storage_mapper("agreement_sender_sign_time")]
-    fn agreement_sender_sign_time(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
+    #[storage_mapper("agreement_sign_time_per_account")]
+    fn agreement_sign_time_per_account(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
 
     // Stores the time when a sender canceled an agreement
-    #[storage_mapper("agreement_sender_cancel_time")]
-    fn agreement_sender_cancel_time(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
+    #[storage_mapper("agreement_cancel_time_per_account")]
+    fn agreement_cancel_time_per_account(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
 
-    // Stores all agreement transfers for one sender, for those agreements with only one sender it will behave as agreement transfers as well
-    #[storage_mapper("agreement_sender_transfers")]
-    fn agreement_sender_transfers(&self, agreement_id: u64, sender: &ManagedAddress) -> UnorderedSetMapper<AgreementTransfer<Self::Api>>;
+    #[storage_mapper("agreement_last_account_trigger")]
+    fn agreement_last_cycle_triggered_per_account(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
 
-    // Stores all agreement transfers for one receiver, for those agreements with only one receiver it will behave as agreement transfers as well
-    #[storage_mapper("agreement_receiver_transfers")]
-    fn agreement_receiver_transfers(&self, agreement_id: u64, receiver: &ManagedAddress) -> UnorderedSetMapper<AgreementTransfer<Self::Api>>;
-
-    // Last transfer time betweek a sender and a receiver for a specific agreement, can be used for all agreements types
-    #[storage_mapper("agreement_last_successful_transfer_time")]
-    fn agreement_last_successful_transfer_time(&self, agreement_id: u64, sender: &ManagedAddress, receiver: &ManagedAddress) -> SingleValueMapper<u64>;
-
-    #[storage_mapper("agreement_receivers")]
-    fn agreement_receivers(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+    #[storage_mapper("agreement_defined_amount_per_account")]
+    fn agreement_defined_amount_per_account(&self, aggreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<Amount<Self::Api>>;
 
     /** Stores all the agreement IDs that belong to an account **/
     #[view(getAccountCreatedAgreementsListByAddress)]

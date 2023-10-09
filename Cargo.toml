@@ -1,5 +1,5 @@
 [package]
-name = "lunar-pay"
+name = "lunarpay"
 version = "0.0.1"
 authors = [ "contact@esdt.space",]
 edition = "2018"
