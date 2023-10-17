@@ -1,8 +1,6 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::types::{AgreementAmountType, AgreementType};
-
 #[multiversx_sc::module]
 pub trait ValidationModule:
                 crate::storage::StorageModule
