@@ -13,10 +13,10 @@
             "recall-nonce": true,
             "pem": "../path/to/wallet.pem",
             "outfile": "lunar-pay.json",
-            "bytecode": "output/lunar-pay.wasm",
+            "bytecode": "output/lunarpay.wasm",
             "chain": "D",
             "proxy": "https://devnet-gateway.multiversx.com",
-            "gas-limit": 30000000
+            "gas-limit": 50000000
         }
     }
 }
