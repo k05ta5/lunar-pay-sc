@@ -17,7 +17,7 @@ pub trait AgreementCyclesModule:
     ///
     /// The last trigger timestamp.
     fn last_triggered_timestamp(&self, agreement_id: u64, address: &ManagedAddress<Self::Api>) -> u64 {
-        self.agreement_last_cycle_triggered_per_account(agreement_id, address).get()
+        self.agreement_last_triggered_time_per_account(agreement_id, address).get()
     }
 
     /// Computes the timestamp for triggering a new cycle based on frequency and the number of cycles.
