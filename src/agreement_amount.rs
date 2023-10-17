@@ -51,6 +51,8 @@ pub trait AgreementAmountModule:
         let amount_struct = amount.expect("Amount should be provided for this agreement type");
         let fixed_amount = amount_struct.fixed_amount.expect("Fixed amount should be provided");
 
+        require!(fixed_amount > 0, "Fixed amount value should be higher than 0");
+
         Amount {
             fixed_amount: Some(fixed_amount),
             minimum_amount: None,
@@ -62,6 +64,8 @@ pub trait AgreementAmountModule:
         let amount_struct = amount.expect("Amount should be provided for this agreement type");
         let minimum_amount = amount_struct.minimum_amount.expect("Minimum amount should be provided");
         let maximum_amount = amount_struct.maximum_amount.expect("Maximum amount should be provided");
+
+        require!(maximum_amount > minimum_amount, "Maximum amount should be higher than minimum amount");
 
         Amount {
             fixed_amount: None,
@@ -86,5 +90,10 @@ pub trait AgreementAmountModule:
 
             _ => panic!("Invalid agreement amount type")
         }
+    }
+
+    fn get_charge_value(&self, agreement_id: u64, amount_type: AgreementAmountType, address: &ManagedAddress<Self::Api>) -> BigUint {
+        // TODO: Check for bounds when new agreement types are implemented. Until then, we they only amount type we have is fixed_amount.
+        self.get_amount_agreed_by_parties(agreement_id, amount_type, &address).fixed_amount.unwrap()
     }
 }
