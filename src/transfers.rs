@@ -1,8 +1,6 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::types::{AgreementTransferStatus, AgreementTransferReason};
-
 #[multiversx_sc::module]
 pub trait TransfersModule:
     crate::events::EventsModule +
