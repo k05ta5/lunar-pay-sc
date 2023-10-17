@@ -5,6 +5,7 @@ use crate::types::{AgreementTransferStatus, AgreementTransferReason};
 
 #[multiversx_sc::module]
 pub trait TransfersModule:
+    crate::events::EventsModule +
     crate::storage::StorageModule +
     crate::validation::ValidationModule
 {
@@ -14,6 +15,7 @@ pub trait TransfersModule:
         require!(caller != receiver, "Sender and receiver must be different");
 
         self.do_transfer_and_update_balance(&caller, &receiver, &token, &amount);
+        self.transfer_event(&caller, &receiver, &token, 0, &amount, false);
     }
 
     #[inline]
