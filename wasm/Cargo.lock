@@ -65,17 +65,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7ebdb29d2ea9ed0083cd8cece49bbd968021bd99b0849edb4a9a7ee0fdf6a4e0"
 
 [[package]]
-name = "lunar-pay"
+name = "lunarpay"
 version = "0.0.1"
 dependencies = [
  "multiversx-sc",
 ]
 
 [[package]]
-name = "lunar-pay-wasm"
+name = "lunarpay-wasm"
 version = "0.0.0"
 dependencies = [
- "lunar-pay",
+ "lunarpay",
  "multiversx-sc-wasm-adapter",
 ]
 
