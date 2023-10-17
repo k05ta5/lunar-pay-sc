@@ -1,9 +1,11 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
+use crate::types::{AgreementAmountType, AgreementType};
+
 #[multiversx_sc::module]
 pub trait ValidationModule:
-    crate::storage::StorageModule
+                crate::storage::StorageModule
 {
     fn is_token_whitelisted(&self, token: &EgldOrEsdtTokenIdentifier<Self::Api>) -> bool {
         return self.whitelisted_token_ids().contains(&token)
@@ -58,7 +60,7 @@ pub trait ValidationModule:
     }
 
     fn is_agreement_signed_by_account(&self, agreement_id: u64, account: &ManagedAddress) -> bool {
-        self.agreement_current_senders(agreement_id).contains(account)
+        self.agreement_accounts(agreement_id).contains(account)
     }
 
     fn require_agreement_signed_by_account(&self, agreement_id: u64, account: &ManagedAddress) {

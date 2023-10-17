@@ -30,24 +30,35 @@ pub trait AgreementsModule:
 
         let agreement = Agreement {
             id: agreement_identifier.clone(),
-            creator: caller.clone(),
-
-            token_nonce: 0,
-            token_identifier,
-
-            frequency,
+            owner: caller.clone(),
             time_created: timestamp,
 
+            token_nonce: 0,
+            token_identifier: token_identifier.clone(),
+
+            frequency,
             agreement_type,
             amount_type,
         };
 
         let amount: Amount<Self::Api> = self.construct_agreement_amount(agreement_type, amount_type, _amount);
-        self.agreement_amount(agreement_identifier).set(amount);
+        self.agreement_amount(agreement_identifier).set(&amount);
 
         self.agreement_ids().insert(agreement_identifier);
         self.agreement_by_id(agreement_identifier).set(&agreement);
         self.account_created_agreements_list(&caller).insert(agreement_identifier);
+
+        self.create_payment_agreement_event(
+            agreement.id,
+            &agreement.owner,
+            agreement.token_nonce,
+            &agreement.token_identifier,
+            agreement.frequency,
+            agreement.time_created,
+            agreement.agreement_type,
+            agreement.amount_type,
+            Some(amount),
+        );
     }
 
     #[inline]
