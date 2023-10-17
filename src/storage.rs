@@ -58,10 +58,6 @@ pub trait StorageModule {
     #[storage_mapper("agreement_by_id")]
     fn agreement_by_id(&self, agreement_id: u64) -> SingleValueMapper<Agreement<Self::Api>>;
 
-    #[view(getAgreementWhitelistEnabled)]
-    #[storage_mapper("agreement_whitelist_enabled")]
-    fn agreement_whitelist_enabled(&self, agreement_id: u64) -> SingleValueMapper<bool>;
-
     #[view(getAgreementWhitelist)]
     #[storage_mapper("agreement_whitelist")]
     fn agreement_whitelist(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
@@ -71,8 +67,8 @@ pub trait StorageModule {
     fn agreement_accounts(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
 
     /** Stores the currnet accounts for an agreement. It acts as senders or receivers list **/
-    #[storage_mapper("agreement_current_accounts")]
-    fn agreement_current_accounts(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
+    #[storage_mapper("agreement_active_accounts")]
+    fn agreement_active_accounts(&self, agreement_id: u64) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
 
     // Stores the time when a sender signed an agreement
     #[storage_mapper("agreement_sign_time_per_account")]
@@ -84,6 +80,9 @@ pub trait StorageModule {
 
     #[storage_mapper("agreement_last_account_trigger")]
     fn agreement_last_cycle_triggered_per_account(&self, agreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<u64>;
+
+    #[storage_mapper("agreement_amount")]
+    fn agreement_amount(&self, aggreement_id: u64) -> SingleValueMapper<Amount<Self::Api>>;
 
     #[storage_mapper("agreement_defined_amount_per_account")]
     fn agreement_defined_amount_per_account(&self, aggreement_id: u64, address: &ManagedAddress) -> SingleValueMapper<Amount<Self::Api>>;
