@@ -9,10 +9,9 @@ pub mod storage;
 pub mod transfers;
 pub mod validation;
 pub mod events;
-// pub mod charges;
 
 pub mod agreement;
-pub mod agreement_sign;
+pub mod agreement_signing;
 pub mod agreement_cycles;
 pub mod agreement_amount;
 pub mod agreement_triggers;
@@ -24,16 +23,16 @@ pub trait LunarPay:
     events::EventsModule +
     storage::StorageModule +
     validation::ValidationModule +
+
     account::AccountModule +
     protocol::ProtocolModule +
-    // charges::ChargesModule +
     transfers::TransfersModule +
 
     agreement::AgreementsModule +
-    agreement_sign::SignAgreementModule +
+    agreement_signing::SignAgreementModule +
     agreement_triggers::AgreementTriggersModule +
     agreement_cycles::AgreementCyclesModule +
-    agreement_amount::AgreementAmountModule +
+    agreement_amount::AgreementAmountModule
 {
     #[init]
     fn init(&self) {}
