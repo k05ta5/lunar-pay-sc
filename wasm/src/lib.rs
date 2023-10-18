@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           27
+// Endpoints:                           21
 // Async Callback (empty):               1
-// Total number of exported functions:  29
+// Total number of exported functions:  23
 
 #![no_std]
 
@@ -19,7 +19,7 @@ multiversx_sc_wasm_adapter::allocator!();
 multiversx_sc_wasm_adapter::panic_handler!();
 
 multiversx_sc_wasm_adapter::endpoints! {
-    lunar_pay
+    lunarpay
     (
         init => init
         getWhitelistedTokenIds => whitelisted_token_ids
@@ -27,11 +27,9 @@ multiversx_sc_wasm_adapter::endpoints! {
         getWhitelistedAddresses => whitelisted_addresses
         getLastAgreementId => last_agreement_id
         getAgreementIds => agreement_ids
-        agreement_subscriber_defined_amount => agreement_subscriber_defined_amount
-        getAgreementWhitelistEnabled => agreement_whitelist_enabled
         getAgreementWhitelist => agreement_whitelist
-        getAccountCreatedAgreementsListByAddress => account_created_agreements_list
-        getAgreementsListByAddress => account_signed_agreements_list
+        getAgreementsCreatedByAccount => account_created_agreements_list
+        getAgreementsSignedByAccount => account_signed_agreements_list
         depositEgld => deposit_egld
         withdrawEgld => withdraw_egld
         depositEsdt => deposit_esdt
@@ -41,14 +39,10 @@ multiversx_sc_wasm_adapter::endpoints! {
         removeWhitelistedToken => remove_whitelisted_token
         whitelistAddress => whitelist_address
         removeWhitelistedAddress => reomve_whitelisted_address
-        chargeAgreementSenders => charge_agreement_senders
         transferTokens => transfer
-        createRecuringPaymentAgreementToSend => create_recurring_payment_agreement_to_send
-        createRecuringPaymentAgreementToReceive => create_recurring_payment_agreement_to_receive
+        createPaymentAgreement => create_payment_agreement
         signAgreement => sign_agreement
-        signAgreementWithAmount => sign_agreement_with_amount
-        cancelAgreement => cancel_agreement
-        claimAgreement => claim_agreement
+        triggerAgreement => trigger_agreement
     )
 }
 
