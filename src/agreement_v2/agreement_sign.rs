@@ -46,8 +46,8 @@ pub trait SignAgreementModule:
 
     fn can_account_sign_agreement(&self, agreement: Agreement<Self::Api>) -> bool {
         match agreement.agreement_type {
-            AgreementType::RecurringPayoutToReceive {..} => true,
-            AgreementType::TermRestrictedPayoutToReceive {..} => true,
+            AgreementType::RecurringPayoutToReceive => true,
+            AgreementType::TermRestrictedPayoutToReceive => true,
             _ => false
         }
     }
