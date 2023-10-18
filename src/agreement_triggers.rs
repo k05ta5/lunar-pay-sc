@@ -1,111 +1,94 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::types::{Agreement, AgreementType, Amount, AgreementAmountType};
+use crate::types::{Agreement, AgreementType, AgreementChargeResult};
 
 #[multiversx_sc::module]
 pub trait AgreementTriggersModule:
+    crate::events::EventsModule +
     crate::storage::StorageModule +
     crate::transfers::TransfersModule +
     crate::validation::ValidationModule +
     crate::agreement_cycles::AgreementCyclesModule +
     crate::agreement_amount::AgreementAmountModule
 {
-    /**  **/
-    #[endpoint(triggerRecurringAgreement)]
-    fn trigger_recurring_agreement(&self, agreement_id: u64) {
+    #[endpoint(triggerAgreement)]
+    fn trigger_agreement(&self, agreement_id: u64) {
         self.require_existing_agreement_id(agreement_id);
 
-        let caller = self.blockchain().get_caller();
         let agreement = self.agreement_by_id(agreement_id).get();
 
+        let mut successful_data = AgreementChargeResult::new();
+        let mut failed_data = AgreementChargeResult::new();
+
         match agreement.agreement_type {
-            AgreementType::RecurringPayoutToSend |
             AgreementType::RecurringPayoutToReceive => {
-                let accounts_list: UnorderedSetMapper<ManagedAddress<Self::Api>> = self.agreement_accounts(agreement.id);
+                let accounts_list: UnorderedSetMapper<ManagedAddress<Self::Api>> =
+                    self.agreement_accounts(agreement.id.clone());
 
                 require!(!accounts_list.is_empty(), "Nothing to send");
 
                 for account in accounts_list.iter() {
-                    self.trigger_agreement_for_account(agreement, account);
+                    let (successful, failed) = self.trigger_agreement_for_recurring_payout_to_receive(&agreement, &account);
+
+                    if let Some((amount, cycles)) = successful {
+                        successful_data.push(account.clone(), amount, cycles);
+                    }
+
+                    if let Some((amount, cycles)) = failed {
+                        failed_data.push(account.clone(), amount, cycles);
+                    }
                 }
             },
 
             _ => panic!("You cannot trigger this agreement")
         }
+
+        if !successful_data.accounts.is_empty() {
+            self.successful_charges_event(agreement_id, successful_data.accounts, successful_data.amounts, successful_data.cycles);
+        }
+
+        if !failed_data.accounts.is_empty() {
+            self.failed_charges_event(agreement_id, failed_data.accounts, failed_data.amounts, failed_data.cycles);
+        }
     }
 
-    #[inline]
-    fn trigger_agreement_for_account(&self, agreement: Agreement<Self::Api>, account: ManagedAddress<Self::Api>) {
-        let amount_agreed: Amount<Self::Api> = self.get_amount_agreed_by_parties(agreement, account);
+    fn trigger_agreement_for_recurring_payout_to_receive(
+        &self,
+        agreement: &Agreement<Self::Api>,
+        account: &ManagedAddress<Self::Api>
+    ) -> (Option<(BigUint, u64)>, Option<(BigUint, u64)>) {
+        let sender = account.clone();
+        let receiver = agreement.owner.clone();
 
-        let mut sender: ManagedAddress<Self::Api>;
-        let mut receiver: ManagedAddress<Self::Api>;
+        let total_pending_cycles = self.pending_cycles_count(agreement.id, agreement.frequency, &account);
+        let amount_per_cycle = self.get_charge_value(agreement.id, agreement.amount_type, &account);
+        let user_balance = self.account_balance(&sender, &agreement.token_identifier).get();
 
-        match agreement.agreement_type {
-            AgreementType::RecurringPayoutToSend => {
-                sender = agreement.creator;
-                receiver = account.clone();
+        // Determine how many cycles the user can afford
+        let affordable_cycles = (&user_balance / &amount_per_cycle).to_u64().unwrap_or(0);
 
-                //TODO: Implement this
+        // No funds available for any cycle
+        if affordable_cycles == 0 {
+            return (None, Some((amount_per_cycle * total_pending_cycles, total_pending_cycles)));
+        }
 
-                let cycles_to_charge = self.get_account_number_of_cycles_to_trigger(agreement.id, agreement.frequency, &account);
-                let amount_per_cycle = amount_agreed.fixed_amount.unwrap();
+        // Charge for the cycles the user can afford
+        let amount_to_charge = amount_per_cycle.clone() * affordable_cycles;
+        self.do_transfer_and_update_balance(&sender, &receiver, &agreement.token_identifier, &amount_to_charge);
 
-                let total_amount = amount_per_cycle * cycles_to_charge;
+        let last_triggered_cycle = self.agreement_last_triggered_time_per_account(agreement.id, &account).get();
+        let end_cycle = affordable_cycles + last_triggered_cycle;
 
-                if(self.account_has_sufficient_balance(&sender, &agreement.token_identifier, &total_amount)) {
-                    self.do_transfer_and_update_balance(&sender, &receiver, &agreement.token_identifier, &total_amount);
-                }
-            },
-            AgreementType::RecurringPayoutToReceive => {
-                sender = agreement.creator;
-                receiver = account.clone();
+        self.agreement_last_triggered_time_per_account(agreement.id, &account).set(end_cycle);
 
-                //TODO: Implement this
-
-                let cycles_to_charge = self.get_account_number_of_cycles_to_trigger(agreement.id, agreement.frequency, &account);
-                let amount_per_cycle = amount_agreed.fixed_amount.unwrap();
-
-                let total_amount = amount_per_cycle * cycles_to_charge;
-
-                if self.account_has_sufficient_balance(&sender, &agreement.token_identifier, &total_amount) {
-                    self.do_transfer_and_update_balance(&sender, &receiver, &agreement.token_identifier, &total_amount);
-                }
-            }
-            AgreementType::TermRestrictedPayoutToSend => {
-                sender = agreement.creator;
-                receiver = account.clone();
-
-                //TODO: Implement this
-                match agreement.amount_type {
-                    AgreementAmountType::FixedAmount => {
-                        let total_amount = amount_agreed.fixed_amount.unwrap();
-
-                        if self.account_has_sufficient_balance(&sender, &agreement.token_identifier, &total_amount) {
-                            self.do_transfer_and_update_balance(&sender, &receiver, &agreement.token_identifier, &total_amount);
-                        }
-                    },
-                    AgreementAmountType::BoundedAmount => {},
-                    AgreementAmountType::CreatorDefinedFixedAmountPerReceiver => {},
-                    AgreementAmountType::CreatorDefinedBoundedAmountPerReceiver => {},
-                    _ => panic!("Invalid amount type")
-                }
-            },
-            AgreementType::TermRestrictedPayoutToReceive => {
-                sender = account.clone();
-                receiver = agreement.creator;
-
-                //TODO: Implement this
-                match agreement.amount_type {
-                    AgreementAmountType::FixedAmount => {},
-                    AgreementAmountType::BoundedAmount => {},
-                    AgreementAmountType::SenderDefinedFixedAmount => {},
-                    AgreementAmountType::SenderDefinedBoundedAmount => {},
-                    _ => panic!("Invalid amount type")
-                }
-            },
-            _ => panic!("You cannot trigger this agreement")
+        if affordable_cycles == total_pending_cycles {
+            // User had enough funds for all pending cycles
+            return (Some((amount_to_charge, total_pending_cycles)), None);
+        } else {
+            // User had funds only for part of the pending cycles
+            let cycles_failed = total_pending_cycles - affordable_cycles;
+            return (Some((amount_to_charge, affordable_cycles)), Some((amount_per_cycle * cycles_failed, cycles_failed)));
         }
     }
 }
