@@ -48,13 +48,34 @@ pub trait EventsModule {
         #[indexed] amount: Option<Amount<Self::Api>>,
     );
 
+    #[event("signPaymentAgreement")]
+    fn sign_payment_agreement_event(
+        &self,
+        #[indexed] agreement_id: u64,
+        #[indexed] signer: &ManagedAddress,
+        #[indexed] sign_time: u64,
+    );
+
     #[event("cancelPaymentAgreement")]
     fn cancel_payment_agreement_event(
         &self,
     );
 
-    #[event("chargePaymentAgreement")]
-    fn charge_payment_agreement_event(
+    #[event("successfulAgreementCharges")]
+    fn successful_charges_event(
         &self,
+        #[indexed] agreement_id: u64,
+        #[indexed] accounts: ManagedVec<ManagedAddress<Self::Api>>,
+        #[indexed] amounts: ManagedVec<BigUint>,
+        #[indexed] cycles: ManagedVec<u64>,
+    );
+
+    #[event("failedAgreementCharges")]
+    fn failed_charges_event(
+        &self,
+        #[indexed] agreement_id: u64,
+        #[indexed] accounts: ManagedVec<ManagedAddress<Self::Api>>,
+        #[indexed] amounts: ManagedVec<BigUint>,
+        #[indexed] cycles: ManagedVec<u64>,
     );
 }
