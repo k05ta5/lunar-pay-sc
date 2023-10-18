@@ -41,3 +41,25 @@ pub struct Agreement<M: ManagedTypeApi> {
     pub token_nonce: u64,
     pub token_identifier: EgldOrEsdtTokenIdentifier<M>,
 }
+
+pub struct AgreementChargeResult<M: ManagedTypeApi> {
+    pub accounts: ManagedVec<M, ManagedAddress<M>>,
+    pub amounts: ManagedVec<M, BigUint<M>>,
+    pub cycles: ManagedVec<M, u64>
+}
+
+impl<M: ManagedTypeApi>  AgreementChargeResult<M> {
+    pub fn new() -> Self {
+        AgreementChargeResult {
+            accounts: ManagedVec::new(),
+            amounts: ManagedVec::new(),
+            cycles: ManagedVec::new()
+        }
+    }
+
+    pub fn push(&mut self, account: ManagedAddress<M>, amount: BigUint<M>, cycle: u64) {
+        self.accounts.push(account);
+        self.amounts.push(amount);
+        self.cycles.push(cycle);
+    }
+}
