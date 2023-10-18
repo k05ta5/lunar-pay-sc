@@ -57,7 +57,9 @@ pub trait AgreementsModule:
             agreement.time_created,
             agreement.agreement_type,
             agreement.amount_type,
-            Some(amount),
+            amount.fixed_amount.unwrap_or_default(),
+            amount.minimum_amount.unwrap_or_default(),
+            amount.maximum_amount.unwrap_or_default(),
         );
     }
 

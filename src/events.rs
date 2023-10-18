@@ -45,7 +45,9 @@ pub trait EventsModule {
         #[indexed] time_created: u64,
         #[indexed] agreement_type: AgreementType,
         #[indexed] amount_type: AgreementAmountType,
-        #[indexed] amount: Option<Amount<Self::Api>>,
+        #[indexed] fixed_amount: BigUint,
+        #[indexed] minimum_amount: BigUint,
+        #[indexed] maximum_amount: BigUint,
     );
 
     #[event("signPaymentAgreement")]
