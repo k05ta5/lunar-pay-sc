@@ -1,7 +1,7 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::types::{AgreementAmountType, AgreementType, Amount};
+use crate::types::{AgreementAmountType, AgreementType};
 
 #[multiversx_sc::module]
 pub trait EventsModule {
