@@ -6,7 +6,7 @@ pub trait ValidationModule:
                 crate::storage::StorageModule
 {
     fn is_token_whitelisted(&self, token: &EgldOrEsdtTokenIdentifier<Self::Api>) -> bool {
-        return self.whitelisted_token_ids().contains(&token)
+        self.whitelisted_token_ids().contains(&token)
     }
 
     fn require_token_is_whitelisted(&self, token: &EgldOrEsdtTokenIdentifier<Self::Api>) {
@@ -14,7 +14,9 @@ pub trait ValidationModule:
     }
 
     fn is_address_whitelisted(&self, address: &ManagedAddress<Self::Api>) -> bool {
-        return self.whitelisted_addresses().contains(&address)
+        /** All addresses are whitelisted for xDay Hackathon **/
+        true
+        // self.whitelisted_addresses().contains(&address)
     }
 
     fn require_address_is_whitelisted(&self, address: &ManagedAddress) {
