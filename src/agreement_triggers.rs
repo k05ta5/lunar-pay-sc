@@ -75,7 +75,7 @@ pub trait AgreementTriggersModule:
 
         // Charge for the cycles the user can afford
         let amount_to_charge = amount_per_cycle.clone() * affordable_cycles;
-        self.do_transfer_and_update_balance(&sender, &receiver, &agreement.token_identifier, &amount_to_charge);
+        self.do_internal_transfer_and_update_balances(&sender, &receiver, &agreement.token_identifier, &amount_to_charge);
 
         let last_triggered_cycle = self.agreement_last_triggered_time_per_account(agreement.id, &account).get();
         let end_cycle = affordable_cycles + last_triggered_cycle;

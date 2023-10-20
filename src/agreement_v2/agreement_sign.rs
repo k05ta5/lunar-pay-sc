@@ -44,6 +44,18 @@ pub trait SignAgreementModule:
         self.account_signed_agreements_list(&caller).insert(agreement_id);
     }
 
+    fn calculate_charge_amount(&self, agreement: &Agreement<Self::Api>, account: &ManagedAddress) -> BigUint {
+        let current_timestamp = self.blockchain().get_block_timestamp();
+
+        let completed_cycles = (current_timestamp - agreement.time_created) / agreement.frequency;
+        let cycle_start_timestamp = agreement.time_created + completed_cycles * agreement.frequency;
+        let time_elapsed_in_current_cycle = current_timestamp - cycle_start_timestamp;
+
+        let cycle_cost = self.get_charge_value(agreement.id, agreement.amount_type, account);
+
+        cycle_cost * time_elapsed_in_current_cycle / agreement.frequency
+    }
+
     fn can_account_sign_agreement(&self, agreement: Agreement<Self::Api>) -> bool {
         match agreement.agreement_type {
             AgreementType::RecurringPayoutToReceive => true,

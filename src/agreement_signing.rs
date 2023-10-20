@@ -1,7 +1,7 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
-use crate::types::{AgreementType, Agreement};
+use crate::types::{AgreementType};
 
 #[multiversx_sc::module]
 pub trait SignAgreementModule:
@@ -34,22 +34,11 @@ crate::transfers::TransfersModule +
 
         self.account_signed_agreements_list(&caller).insert(agreement_id);
 
-        let initial_charge_amount = self.calculate_charge_amount(&agreement, &caller);
-        self.do_transfer_and_update_balance(&caller, &agreement.owner, &agreement.token_identifier, &initial_charge_amount);
+        // We charge one full cycle when the agreement is signed
+        let cycle_cost = self.get_charge_value(agreement.id, agreement.amount_type, &caller);
+        self.do_internal_transfer_and_update_balances(&caller, &agreement.owner, &agreement.token_identifier, &cycle_cost);
 
         self.sign_payment_agreement_event(agreement_id, &caller, timestamp);
-    }
-
-    fn calculate_charge_amount(&self, agreement: &Agreement<Self::Api>, account: &ManagedAddress) -> BigUint {
-        let current_timestamp = self.blockchain().get_block_timestamp();
-
-        let completed_cycles = (current_timestamp - agreement.time_created) / agreement.frequency;
-        let cycle_start_timestamp = agreement.time_created + completed_cycles * agreement.frequency;
-        let time_elapsed_in_current_cycle = current_timestamp - cycle_start_timestamp;
-
-        let cycle_cost = self.get_charge_value(agreement.id, agreement.amount_type, account);
-
-        cycle_cost * time_elapsed_in_current_cycle / agreement.frequency
     }
 
     /* TODO: Only RecurringPayoutToReceive agreements can be signed for the xDay Hackathon */

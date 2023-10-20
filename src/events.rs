@@ -54,8 +54,8 @@ pub trait EventsModule {
     fn sign_payment_agreement_event(
         &self,
         #[indexed] agreement_id: u64,
-        #[indexed] signer: &ManagedAddress,
-        #[indexed] sign_time: u64,
+        #[indexed] member: &ManagedAddress,
+        #[indexed] signed_at: u64,
     );
 
     #[event("cancelPaymentAgreement")]

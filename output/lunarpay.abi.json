@@ -475,12 +475,12 @@
                     "indexed": true
                 },
                 {
-                    "name": "signer",
+                    "name": "member",
                     "type": "Address",
                     "indexed": true
                 },
                 {
-                    "name": "sign_time",
+                    "name": "signed_at",
                     "type": "u64",
                     "indexed": true
                 }
