@@ -19,8 +19,10 @@ pub trait ValidationModule:
         // self.whitelisted_addresses().contains(&address)
     }
 
-    fn require_address_is_whitelisted(&self, address: &ManagedAddress) {
-        require!(self.is_address_whitelisted(address), "Address is not whitelisted");
+    fn require_address_is_whitelisted(&self, address: &ManagedAddress) -> bool {
+        /** All addresses are whitelisted for xDay Hackathon **/
+        true
+        // require!(self.is_address_whitelisted(address), "Address is not whitelisted");
     }
 
     fn account_has_sufficient_balance(
