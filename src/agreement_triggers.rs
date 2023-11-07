@@ -94,7 +94,8 @@ pub trait AgreementTriggersModule:
         // Determine how many cycles the user can afford
         let affordable_cycles = (user_balance / amount_per_cycle).to_u64().unwrap_or(0);
 
-        if total_pending_cycles <= affordable_cycles {
+        // The user can afford all pending cycles
+        if affordable_cycles >= total_pending_cycles  {
             return total_pending_cycles;
         }
 
