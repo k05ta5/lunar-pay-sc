@@ -64,31 +64,40 @@ pub trait AgreementTriggersModule:
         let total_pending_cycles = self.pending_cycles_count(agreement.id, agreement.frequency, &account);
         let amount_per_cycle = self.get_charge_value(agreement.id, agreement.amount_type, &account);
         let user_balance = self.account_balance(&sender, &agreement.token_identifier).get();
-
-        // Determine how many cycles the user can afford
-        let affordable_cycles = (&user_balance / &amount_per_cycle).to_u64().unwrap_or(0);
+        let cycles_to_charge = self.get_cycles_to_charge(&user_balance, &amount_per_cycle, total_pending_cycles);
 
         // No funds available for any cycle
-        if affordable_cycles == 0 {
+        if cycles_to_charge == 0 {
             return (None, Some((amount_per_cycle * total_pending_cycles, total_pending_cycles)));
         }
 
         // Charge for the cycles the user can afford
-        let amount_to_charge = amount_per_cycle.clone() * affordable_cycles;
+        let amount_to_charge = amount_per_cycle.clone() * cycles_to_charge;
         self.do_internal_transfer_and_update_balances(&sender, &receiver, &agreement.token_identifier, &amount_to_charge);
 
         let last_triggered_cycle = self.agreement_last_triggered_time_per_account(agreement.id, &account).get();
-        let end_cycle = affordable_cycles + last_triggered_cycle;
+        let end_cycle = cycles_to_charge + last_triggered_cycle;
 
         self.agreement_last_triggered_time_per_account(agreement.id, &account).set(end_cycle);
 
-        if affordable_cycles == total_pending_cycles {
+        if cycles_to_charge == total_pending_cycles {
             // User had enough funds for all pending cycles
             return (Some((amount_to_charge, total_pending_cycles)), None);
         } else {
             // User had funds only for part of the pending cycles
-            let cycles_failed = total_pending_cycles - affordable_cycles;
-            return (Some((amount_to_charge, affordable_cycles)), Some((amount_per_cycle * cycles_failed, cycles_failed)));
+            let cycles_failed = total_pending_cycles - cycles_to_charge;
+            return (Some((amount_to_charge, cycles_to_charge)), Some((amount_per_cycle * cycles_failed, cycles_failed)));
         }
+    }
+
+    fn get_cycles_to_charge(&self, user_balance: &BigUint, amount_per_cycle: &BigUint, total_pending_cycles: u64) -> u64 {
+        // Determine how many cycles the user can afford
+        let affordable_cycles = (user_balance / amount_per_cycle).to_u64().unwrap_or(0);
+
+        if total_pending_cycles <= affordable_cycles {
+            return total_pending_cycles;
+        }
+
+        affordable_cycles
     }
 }
