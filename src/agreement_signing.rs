@@ -37,6 +37,7 @@ crate::transfers::TransfersModule +
         // We charge one full cycle when the agreement is signed
         let cycle_cost = self.get_charge_value(agreement.id, agreement.amount_type, &caller);
         self.do_internal_transfer_and_update_balances(&caller, &agreement.owner, &agreement.token_identifier, &cycle_cost);
+        self.agreement_last_triggered_time_per_account(agreement.id, &caller).set(timestamp);
 
         self.sign_payment_agreement_event(agreement_id, &caller, timestamp);
     }
