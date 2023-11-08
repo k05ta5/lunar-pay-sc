@@ -62,6 +62,12 @@ pub trait AgreementTriggersModule:
         let receiver = agreement.owner.clone();
 
         let total_pending_cycles = self.pending_cycles_count(agreement.id, agreement.frequency, &account);
+
+        // Nothing to charge
+        if total_pending_cycles == 0 {
+            return (None, None);
+        }
+
         let amount_per_cycle = self.get_charge_value(agreement.id, agreement.amount_type, &account);
         let user_balance = self.account_balance(&sender, &agreement.token_identifier).get();
         let cycles_to_charge = self.get_cycles_to_charge(&user_balance, &amount_per_cycle, total_pending_cycles);
