@@ -46,7 +46,7 @@
             "str:account_balance|address:address-1|nested:str:USDC": "5000",
             "+": ""
           },
-          "code": "file:../../output/lunar-pay.wasm"
+          "code": "file:../../output/lunarpay.wasm"
         },
         "+": ""
       }

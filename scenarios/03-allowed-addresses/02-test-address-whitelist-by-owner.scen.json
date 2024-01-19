@@ -34,7 +34,7 @@
             "str:whitelisted_addresses.item|u32:2": "address:business-2",
             "+": ""
           },
-          "code": "file:../../output/lunar-pay.wasm"
+          "code": "file:../../output/lunarpay.wasm"
         },
         "+": ""
       }
@@ -68,7 +68,7 @@
             "str:whitelisted_addresses.item|u32:3": "address:business-3",
             "+": ""
           },
-          "code": "file:../../output/lunar-pay.wasm"
+          "code": "file:../../output/lunarpay.wasm"
         },
         "+": ""
       }

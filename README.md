@@ -26,7 +26,7 @@ mxpy --verbose contract build
             "recall-nonce": true,
             "pem": "../path/to/wallet.pem",
             "outfile": "lunar-pay.json",
-            "bytecode": "output/lunar-pay.wasm",
+            "bytecode": "output/lunarpay.wasm",
             "gas-limit": 30000000
         }
      }

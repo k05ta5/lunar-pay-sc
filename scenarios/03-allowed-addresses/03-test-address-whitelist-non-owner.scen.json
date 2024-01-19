@@ -52,7 +52,7 @@
             "str:whitelisted_addresses.item|u32:2": "address:business-2",
             "+": ""
           },
-          "code": "file:../../output/lunar-pay.wasm"
+          "code": "file:../../output/lunarpay.wasm"
         },
         "+": ""
       }

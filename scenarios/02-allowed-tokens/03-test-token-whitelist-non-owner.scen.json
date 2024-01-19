@@ -53,7 +53,7 @@
             "str:whitelisted_token_ids.item|u32:3": "str:WEGLD",
             "+": ""
           },
-          "code": "file:../../output/lunar-pay.wasm"
+          "code": "file:../../output/lunarpay.wasm"
         },
         "+": ""
       }

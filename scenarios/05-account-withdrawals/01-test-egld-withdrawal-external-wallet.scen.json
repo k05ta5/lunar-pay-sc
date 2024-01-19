@@ -38,7 +38,7 @@
             "str:account_balance|address:address-2|nested:str:EGLD": "100",
             "+": ""
           },
-          "code": "file:../../output/lunar-pay.wasm"
+          "code": "file:../../output/lunarpay.wasm"
         },
         "+": ""
       }
