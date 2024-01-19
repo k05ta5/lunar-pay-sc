@@ -7,6 +7,14 @@ use crate::types::{Agreement, Amount};
 pub trait StorageModule {
     /** Protocol Storage */
 
+    #[storage_mapper("admins")]
+    fn admins(&self) -> WhitelistMapper<ManagedAddress>;
+
+    #[view(isUserAdmin)]
+    fn is_user_admin(&self, account: ManagedAddress) -> bool {
+        self.admins().contains(&account)
+    }
+
     /*
      * Stores the current whitelisted token identifiers
      */

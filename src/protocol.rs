@@ -37,4 +37,16 @@ pub trait ProtocolModule:
 
         self.whitelisted_addresses().swap_remove(address);
     }
+
+    #[only_owner]
+    #[endpoint(setAdmin)]
+    fn set_admin(&self, account: ManagedAddress) {
+        self.admins().add(&account)
+    }
+
+    #[only_owner]
+    #[endpoint(removeAdmin)]
+    fn remove_admin(&self, account: ManagedAddress) {
+        self.admins().remove(&account)
+    }
 }
