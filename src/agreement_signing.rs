@@ -15,7 +15,7 @@ crate::transfers::TransfersModule +
      * Subscribe to an agreement
      */
     #[endpoint(signAgreement)]
-    fn sign_agreement(&self, agreement_id: u64) {
+    fn sign_agreement(&self, agreement_id: u64, metadata: Option<ManagedBuffer<Self::Api>>) {
         self.require_existing_agreement_id(agreement_id);
         let agreement = self.agreement_by_id(agreement_id).get();
 
@@ -39,7 +39,7 @@ crate::transfers::TransfersModule +
         self.do_internal_transfer_and_update_balances(&caller, &agreement.owner, &agreement.token_identifier, &cycle_cost);
         self.agreement_last_triggered_time_per_account(agreement.id, &caller).set(timestamp);
 
-        self.sign_payment_agreement_event(agreement_id, &caller, timestamp);
+        self.sign_payment_agreement_event(agreement_id, &caller, timestamp, metadata);
     }
 
     /* TODO: Only RecurringPayoutToReceive agreements can be signed for the xDay Hackathon */
