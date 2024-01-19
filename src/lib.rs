@@ -10,6 +10,8 @@ pub mod transfers;
 pub mod validation;
 pub mod events;
 
+pub mod payments;
+
 pub mod agreement;
 pub mod agreement_signing;
 pub mod agreement_cycles;
@@ -27,6 +29,8 @@ pub trait LunarPay:
     account::AccountModule +
     protocol::ProtocolModule +
     transfers::TransfersModule +
+
+    payments::PaymentsModule +
 
     agreement::AgreementsModule +
     agreement_signing::SignAgreementModule +
