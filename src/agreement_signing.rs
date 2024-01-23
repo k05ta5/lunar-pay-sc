@@ -5,11 +5,11 @@ use crate::types::{AgreementType};
 
 #[multiversx_sc::module]
 pub trait SignAgreementModule:
-crate::events::EventsModule +
-                                                    crate::storage::StorageModule +
-                            crate::validation::ValidationModule +
-crate::transfers::TransfersModule +
-                            crate::agreement_amount::AgreementAmountModule
+    crate::events::EventsModule +
+    crate::storage::StorageModule +
+    crate::validation::ValidationModule +
+    crate::agreement_amount::AgreementAmountModule +
+    crate::modules::transfers::balance_transfer::BalanceTransferModule +
 {
     /**
      * Subscribe to an agreement

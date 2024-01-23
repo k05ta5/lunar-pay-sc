@@ -2,13 +2,13 @@ multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
 #[multiversx_sc::module]
-pub trait PaymentsModule:
-crate::events::EventsModule +
+pub trait UserEndpointsModule:
 crate::storage::StorageModule +
-crate::transfers::TransfersModule +
-crate::validation::ValidationModule
+crate::validation::ValidationModule +
+crate::modules::payments::events::EventsModule +
+crate::modules::transfers::balance_transfer::BalanceTransferModule +
 {
-    #[endpoint(transferTokens)]
+    #[endpoint(pay)]
     fn pay(
         &self,
         token: EgldOrEsdtTokenIdentifier,

@@ -7,9 +7,9 @@ use crate::types::{Agreement, AgreementType, AgreementAmountType, Amount};
 pub trait AgreementsModule:
     crate::events::EventsModule +
     crate::storage::StorageModule +
-    crate::transfers::TransfersModule +
     crate::validation::ValidationModule +
-    crate::agreement_amount::AgreementAmountModule
+    crate::agreement_amount::AgreementAmountModule +
+    crate::modules::transfers::balance_transfer::BalanceTransferModule +
 {
     #[endpoint(createPaymentAgreement)]
     fn create_payment_agreement(

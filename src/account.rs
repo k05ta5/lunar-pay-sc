@@ -5,8 +5,8 @@ multiversx_sc::derive_imports!();
 pub trait AccountModule:
     crate::events::EventsModule +
     crate::storage::StorageModule +
-    crate::transfers::TransfersModule +
     crate::validation::ValidationModule +
+    crate::modules::transfers::balance_transfer::BalanceTransferModule +
 {
     #[payable("EGLD")]
     #[endpoint(depositEgld)]
