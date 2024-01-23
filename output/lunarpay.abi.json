@@ -23,6 +23,12 @@
     },
     "endpoints": [
         {
+            "name": "upgrade",
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
             "name": "isUserAdmin",
             "mutability": "readonly",
             "inputs": [
