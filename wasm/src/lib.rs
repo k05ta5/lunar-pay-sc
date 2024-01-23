@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           21
+// Endpoints:                           25
 // Async Callback (empty):               1
-// Total number of exported functions:  23
+// Total number of exported functions:  27
 
 #![no_std]
 
@@ -22,6 +22,7 @@ multiversx_sc_wasm_adapter::endpoints! {
     lunarpay
     (
         init => init
+        isUserAdmin => is_user_admin
         getWhitelistedTokenIds => whitelisted_token_ids
         getUsedTokenIds => used_token_ids
         getWhitelistedAddresses => whitelisted_addresses
@@ -39,7 +40,10 @@ multiversx_sc_wasm_adapter::endpoints! {
         removeWhitelistedToken => remove_whitelisted_token
         whitelistAddress => whitelist_address
         removeWhitelistedAddress => reomve_whitelisted_address
+        setAdmin => set_admin
+        removeAdmin => remove_admin
         transferTokens => transfer
+        pay => pay
         createPaymentAgreement => create_payment_agreement
         signAgreement => sign_agreement
         triggerAgreement => trigger_agreement
