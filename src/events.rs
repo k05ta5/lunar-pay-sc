@@ -23,28 +23,6 @@ pub trait EventsModule {
         #[indexed] amount: &BigUint,
     );
 
-    #[event("transfer")]
-    fn transfer_event(
-        &self,
-        #[indexed] sender: &ManagedAddress,
-        #[indexed] receiver: &ManagedAddress,
-        #[indexed] token_identifier: &EgldOrEsdtTokenIdentifier,
-        #[indexed] token_nonce: u64,
-        #[indexed] amount: &BigUint,
-        #[indexed] is_internal: bool,
-    );
-
-    #[event("payment")]
-    fn payment_event(
-        &self,
-        #[indexed] sender: &ManagedAddress,
-        #[indexed] receiver: &ManagedAddress,
-        #[indexed] token_identifier: &EgldOrEsdtTokenIdentifier,
-        #[indexed] token_nonce: u64,
-        #[indexed] amount: &BigUint,
-        metadata: Option<ManagedBuffer>,
-    );
-
     #[event("createPaymentAgreement")]
     fn create_payment_agreement_event(
         &self,

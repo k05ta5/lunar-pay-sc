@@ -7,10 +7,10 @@ use crate::types::{Agreement, AgreementType, AgreementChargeResult};
 pub trait AgreementTriggersModule:
     crate::events::EventsModule +
     crate::storage::StorageModule +
-    crate::transfers::TransfersModule +
     crate::validation::ValidationModule +
     crate::agreement_cycles::AgreementCyclesModule +
-    crate::agreement_amount::AgreementAmountModule
+    crate::agreement_amount::AgreementAmountModule +
+    crate::modules::transfers::balance_transfer::BalanceTransferModule +
 {
     #[endpoint(triggerAgreement)]
     fn trigger_agreement(&self, agreement_id: u64) {

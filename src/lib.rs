@@ -3,14 +3,13 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
+mod modules;
+
 pub mod account;
 pub mod protocol;
 pub mod storage;
-pub mod transfers;
 pub mod validation;
 pub mod events;
-
-pub mod payments;
 
 pub mod agreement;
 pub mod agreement_signing;
@@ -28,9 +27,15 @@ pub trait LunarPay:
 
     account::AccountModule +
     protocol::ProtocolModule +
-    transfers::TransfersModule +
 
-    payments::PaymentsModule +
+    // Transfers Module
+    modules::transfers::events::EventsModule +
+    modules::transfers::user_endpoints::UserEndpointsModule +
+    modules::transfers::balance_transfer::BalanceTransferModule +
+
+    // Payments Module
+    modules::payments::events::EventsModule +
+    modules::payments::user_endpoints::UserEndpointsModule +
 
     agreement::AgreementsModule +
     agreement_signing::SignAgreementModule +
@@ -40,4 +45,7 @@ pub trait LunarPay:
 {
     #[init]
     fn init(&self) {}
+
+    #[endpoint(upgrade)]
+    fn upgrade(&self) {}
 }

@@ -15,10 +15,6 @@
     },
     {
       "step": "externalSteps",
-      "path": "init-steps/04-whitelist-addresses.steps.json"
-    },
-    {
-      "step": "externalSteps",
       "path": "init-steps/05-init-account-deposits.steps.json"
     }
   ]
