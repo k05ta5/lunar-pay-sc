@@ -21,7 +21,7 @@
       },
       "expect": {
         "status": "4",
-        "message": "str:Insufficient account balance"
+        "message": "str:Insufficient account balance."
       }
     },
     {
