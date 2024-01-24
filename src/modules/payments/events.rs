@@ -11,6 +11,6 @@ pub trait EventsModule {
         #[indexed] token_identifier: &EgldOrEsdtTokenIdentifier,
         #[indexed] token_nonce: u64,
         #[indexed] amount: &BigUint,
-        metadata: Option<ManagedBuffer>,
+        #[indexed] metadata: Option<ManagedBuffer>,
     );
 }

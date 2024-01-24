@@ -45,7 +45,7 @@ pub trait EventsModule {
         #[indexed] agreement_id: u64,
         #[indexed] member: &ManagedAddress,
         #[indexed] signed_at: u64,
-        metadata: Option<ManagedBuffer>,
+        #[indexed] metadata: Option<ManagedBuffer>,
     );
 
     #[event("cancelPaymentAgreement")]
