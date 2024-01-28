@@ -13,14 +13,14 @@ pub trait ValidationModule:
         require!(self.is_token_whitelisted(token), "Token is not whitelisted");
     }
 
-    fn is_address_whitelisted(&self, address: &ManagedAddress<Self::Api>) -> bool {
-        /** All addresses are whitelisted for xDay Hackathon **/
+    fn is_address_whitelisted(&self, _address: &ManagedAddress<Self::Api>) -> bool {
+        // All addresses are whitelisted for xDay Hackathon
         true
         // self.whitelisted_addresses().contains(&address)
     }
 
-    fn require_address_is_whitelisted(&self, address: &ManagedAddress) -> bool {
-        /** All addresses are whitelisted for xDay Hackathon **/
+    fn require_address_is_whitelisted(&self, _address: &ManagedAddress) -> bool {
+        // All addresses are whitelisted for xDay Hackathon
         true
         // require!(self.is_address_whitelisted(address), "Address is not whitelisted");
     }
