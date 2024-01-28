@@ -43,6 +43,8 @@ pub trait ValidationModule:
         require!(self.account_has_sufficient_balance(&account, &token, &amount), "Insufficient account balance.");
     }
 
+    /** TODO: Delete everything below **/
+
     /** Agreement Validations **/
 
     fn require_existing_agreement_id(&self, agreement_id: u64) {

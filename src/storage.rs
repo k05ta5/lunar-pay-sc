@@ -58,6 +58,9 @@ pub trait StorageModule {
     #[storage_mapper("last_agreement_id")]
     fn last_agreement_id(&self) -> SingleValueMapper<u64>;
 
+
+    /** TODO: Delete everything below **/
+
     #[view(getAgreementIds)]
     #[storage_mapper("agreement_ids")]
     fn agreement_ids(&self) -> SetMapper<u64>;
