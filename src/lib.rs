@@ -37,6 +37,15 @@ pub trait LunarPay:
     modules::payments::events::EventsModule +
     modules::payments::user_endpoints::UserEndpointsModule +
 
+    // Subscriptions Module
+    modules::subscriptions::events::EventsModule +
+    modules::subscriptions::amount::AmountModule +
+    modules::subscriptions::storage::StorageModule +
+    modules::subscriptions::validation::ValidationModule +
+    modules::subscriptions::owner_endpoints::OwnerEndpoints +
+    modules::subscriptions::member_endpoints::MemberEndpoints +
+
+    // Agreements Module
     agreement::AgreementsModule +
     agreement_signing::SignAgreementModule +
     agreement_triggers::AgreementTriggersModule +

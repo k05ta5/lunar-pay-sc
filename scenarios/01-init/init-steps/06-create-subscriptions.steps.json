@@ -1,0 +1,9 @@
+{
+  "name": "Initialize Subscriptions",
+  "steps": [
+    {
+      "step": "externalSteps",
+      "path": "init-steps/06-subscriptions/01-create-subscription-to-receive-money.steps.json"
+    }
+  ]
+}

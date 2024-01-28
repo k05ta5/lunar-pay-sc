@@ -16,7 +16,7 @@
             "bytecode": "output/lunarpay.wasm",
             "chain": "D",
             "proxy": "https://devnet-gateway.multiversx.com",
-            "gas-limit": 50000000
+            "gas-limit": 150000000
         }
     }
 }
