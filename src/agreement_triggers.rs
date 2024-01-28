@@ -81,10 +81,10 @@ pub trait AgreementTriggersModule:
         let amount_to_charge = amount_per_cycle.clone() * cycles_to_charge;
         self.do_internal_transfer_and_update_balances(&sender, &receiver, &agreement.token_identifier, &amount_to_charge);
 
-        let last_triggered_cycle = self.agreement_last_triggered_time_per_account(agreement.id, &account).get();
-        let end_cycle = cycles_to_charge + last_triggered_cycle;
+        let last_triggered_cycle_timestamp = self.agreement_last_triggered_time_per_account(agreement.id, &account).get();
+        let end_cycle_timestamp = last_triggered_cycle_timestamp + cycles_to_charge * agreement.frequency;
 
-        self.agreement_last_triggered_time_per_account(agreement.id, &account).set(end_cycle);
+        self.agreement_last_triggered_time_per_account(agreement.id, &account).set(end_cycle_timestamp);
 
         if cycles_to_charge == total_pending_cycles {
             // User had enough funds for all pending cycles
