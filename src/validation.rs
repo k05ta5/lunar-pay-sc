@@ -2,8 +2,7 @@ multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
 #[multiversx_sc::module]
-pub trait ValidationModule:
-                crate::storage::StorageModule
+pub trait ValidationModule: crate::storage::StorageModule
 {
     fn is_token_whitelisted(&self, token: &EgldOrEsdtTokenIdentifier<Self::Api>) -> bool {
         self.whitelisted_token_ids().contains(&token)
@@ -23,24 +22,6 @@ pub trait ValidationModule:
         // All addresses are whitelisted for xDay Hackathon
         true
         // require!(self.is_address_whitelisted(address), "Address is not whitelisted");
-    }
-
-    fn account_has_sufficient_balance(
-        &self,
-        account: &ManagedAddress,
-        token: &EgldOrEsdtTokenIdentifier<Self::Api>,
-        amount: &BigUint
-    ) -> bool {
-        return self.account_balance(&account, &token).get() >= *amount;
-    }
-
-    fn require_account_has_sufficient_balance(
-        &self,
-        account: &ManagedAddress,
-        token: &EgldOrEsdtTokenIdentifier<Self::Api>,
-        amount: &BigUint
-    ) {
-        require!(self.account_has_sufficient_balance(&account, &token, &amount), "Insufficient account balance.");
     }
 
     /** TODO: Delete everything below **/

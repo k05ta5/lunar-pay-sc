@@ -5,14 +5,14 @@ use crate::modules::subscriptions::types::{Subscription};
 
 #[multiversx_sc::module]
 pub trait MemberEndpoints:
-    crate::storage::StorageModule +
-    crate::validation::ValidationModule +
+    crate::modules::accounts::storage::StorageModule +
+    crate::modules::accounts::validation::ValidationModule +
+    crate::modules::transfers::balance_transfer::BalanceTransferModule +
 
     crate::modules::subscriptions::amount::AmountModule +
     crate::modules::subscriptions::events::EventsModule +
     crate::modules::subscriptions::storage::StorageModule +
     crate::modules::subscriptions::validation::ValidationModule +
-    crate::modules::transfers::balance_transfer::BalanceTransferModule
 {
     /**
      * Subscribe to a subscription

@@ -5,15 +5,15 @@ use crate::modules::subscriptions::types::{Subscription, SubscriptionChargeData}
 
 #[multiversx_sc::module]
 pub trait PublicEndpoints:
-    crate::storage::StorageModule +
-    crate::validation::ValidationModule +
+    crate::modules::accounts::storage::StorageModule +
+    crate::modules::accounts::validation::ValidationModule +
+    crate::modules::transfers::balance_transfer::BalanceTransferModule +
 
     crate::modules::subscriptions::cycles::CyclesModule +
     crate::modules::subscriptions::amount::AmountModule +
     crate::modules::subscriptions::events::EventsModule +
     crate::modules::subscriptions::storage::StorageModule +
     crate::modules::subscriptions::validation::ValidationModule +
-    crate::modules::transfers::balance_transfer::BalanceTransferModule +
 {
     #[endpoint(triggerSubscription)]
     fn trigger_subscription(&self, id: u64) {

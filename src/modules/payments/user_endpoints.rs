@@ -3,10 +3,11 @@ multiversx_sc::derive_imports!();
 
 #[multiversx_sc::module]
 pub trait UserEndpointsModule:
-crate::storage::StorageModule +
-crate::validation::ValidationModule +
-crate::modules::payments::events::EventsModule +
-crate::modules::transfers::balance_transfer::BalanceTransferModule +
+    crate::modules::accounts::storage::StorageModule +
+    crate::modules::accounts::validation::ValidationModule +
+
+    crate::modules::payments::events::EventsModule +
+    crate::modules::transfers::balance_transfer::BalanceTransferModule +
 {
     #[endpoint(pay)]
     fn pay(

@@ -5,7 +5,6 @@ multiversx_sc::derive_imports!();
 
 mod modules;
 
-pub mod account;
 pub mod protocol;
 pub mod storage;
 pub mod validation;
@@ -25,8 +24,14 @@ pub trait LunarPay:
     storage::StorageModule +
     validation::ValidationModule +
 
-    account::AccountModule +
     protocol::ProtocolModule +
+
+    // Accounts Module
+    modules::accounts::views::ViewsModule +
+    modules::accounts::events::EventsModule +
+    modules::accounts::storage::StorageModule +
+    modules::accounts::validation::ValidationModule +
+    modules::accounts::endpoints::EndpointsModule +
 
     // Transfers Module
     modules::transfers::events::EventsModule +

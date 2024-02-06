@@ -2,10 +2,14 @@ multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
 #[multiversx_sc::module]
-pub trait AccountModule:
-    crate::events::EventsModule +
+pub trait EndpointsModule:
     crate::storage::StorageModule +
     crate::validation::ValidationModule +
+
+    crate::modules::accounts::events::EventsModule +
+    crate::modules::accounts::storage::StorageModule +
+    crate::modules::accounts::validation::ValidationModule +
+
     crate::modules::transfers::balance_transfer::BalanceTransferModule +
 {
     #[payable("EGLD")]
@@ -58,23 +62,5 @@ pub trait AccountModule:
         let caller = self.blockchain().get_caller();
         self.withdraw_event(&caller, &token, 0, &amount);
         self.do_transfer_and_update_balance(&caller, &caller, token, amount);
-    }
-
-    /**
-     * It returns the total account balances
-     */
-    #[view(getAccountBalances)]
-    fn get_account_balances(&self, address: &ManagedAddress) -> MultiValueEncoded<(EgldOrEsdtTokenIdentifier, BigUint)> {
-        let mut items_vec = MultiValueEncoded::new();
-
-        for token in self.used_token_ids().iter() {
-            let account_balance = self.account_balance(address, &token);
-
-            if !account_balance.is_empty() {
-                items_vec.push((token, account_balance.get()));
-            }
-        }
-
-        items_vec
     }
 }

@@ -10,6 +10,8 @@ pub trait SignAgreementModule:
     crate::validation::ValidationModule +
     crate::agreement_amount::AgreementAmountModule +
     crate::modules::transfers::balance_transfer::BalanceTransferModule +
+    crate::modules::accounts::storage::StorageModule +
+    crate::modules::accounts::validation::ValidationModule +
 {
     /**
      * Subscribe to an agreement

@@ -5,6 +5,9 @@ use crate::types::{Agreement, AgreementType, AgreementAmountType, Amount};
 
 #[multiversx_sc::module]
 pub trait AgreementsModule:
+    crate::modules::accounts::storage::StorageModule +
+    crate::modules::accounts::validation::ValidationModule +
+
     crate::events::EventsModule +
     crate::storage::StorageModule +
     crate::validation::ValidationModule +

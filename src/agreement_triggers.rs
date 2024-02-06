@@ -11,6 +11,8 @@ pub trait AgreementTriggersModule:
     crate::agreement_cycles::AgreementCyclesModule +
     crate::agreement_amount::AgreementAmountModule +
     crate::modules::transfers::balance_transfer::BalanceTransferModule +
+    crate::modules::accounts::storage::StorageModule +
+    crate::modules::accounts::validation::ValidationModule +
 {
     #[endpoint(triggerAgreement)]
     fn trigger_agreement(&self, agreement_id: u64) {

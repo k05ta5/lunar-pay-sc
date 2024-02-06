@@ -3,8 +3,8 @@ multiversx_sc::derive_imports!();
 
 #[multiversx_sc::module]
 pub trait BalanceTransferModule:
-    crate::storage::StorageModule +
-    crate::validation::ValidationModule
+    crate::modules::accounts::storage::StorageModule +
+    crate::modules::accounts::validation::ValidationModule
 {
     #[inline]
     fn do_transfer_and_update_balance(

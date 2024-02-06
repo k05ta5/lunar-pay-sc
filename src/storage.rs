@@ -37,20 +37,6 @@ pub trait StorageModule {
     #[storage_mapper("whitelisted_addresses")]
     fn whitelisted_addresses(&self) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
 
-    /** Account Storage */
-
-    /*
-    * Stores the accounts
-    */
-    #[storage_mapper("accounts")]
-    fn accounts(&self) -> UnorderedSetMapper<ManagedAddress<Self::Api>>;
-
-    /*
-     * Stores the total account balance for each token identifier
-     */
-    #[storage_mapper("account_balance")]
-    fn account_balance(&self, address: &ManagedAddress, token: &EgldOrEsdtTokenIdentifier) -> SingleValueMapper<BigUint<Self::Api>>;
-
     /** Agreement Storage */
 
     /** Stores the last ID assigned to an agreement **/
