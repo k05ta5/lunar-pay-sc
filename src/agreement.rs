@@ -5,12 +5,16 @@ use crate::types::{Agreement, AgreementType, AgreementAmountType, Amount};
 
 #[multiversx_sc::module]
 pub trait AgreementsModule:
-    crate::modules::accounts::storage::StorageModule +
-    crate::modules::accounts::validation::ValidationModule +
-
     crate::events::EventsModule +
     crate::storage::StorageModule +
     crate::validation::ValidationModule +
+
+    crate::modules::agreements::storage::StorageModule +
+    crate::modules::protocol::storage::StorageModule +
+    crate::modules::protocol::validation::ValidationModule +
+    crate::modules::accounts::storage::StorageModule +
+    crate::modules::accounts::validation::ValidationModule +
+
     crate::agreement_amount::AgreementAmountModule +
     crate::modules::transfers::balance_transfer::BalanceTransferModule +
 {

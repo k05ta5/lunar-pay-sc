@@ -23,15 +23,14 @@ multiversx_sc_wasm_adapter::endpoints! {
     (
         init => init
         upgrade => upgrade
-        isUserAdmin => is_user_admin
-        getWhitelistedTokenIds => whitelisted_token_ids
-        getUsedTokenIds => used_token_ids
-        getWhitelistedAddresses => whitelisted_addresses
-        getLastAgreementId => last_agreement_id
         getAgreementIds => agreement_ids
         getAgreementWhitelist => agreement_whitelist
         getAgreementsCreatedByAccount => account_created_agreements_list
         getAgreementsSignedByAccount => account_signed_agreements_list
+        isUserAdmin => is_user_admin
+        getWhitelistedTokenIds => whitelisted_token_ids
+        getUsedTokenIds => used_token_ids
+        getWhitelistedAddresses => whitelisted_addresses
         whitelistToken => whitelist_token
         removeWhitelistedToken => remove_whitelisted_token
         whitelistAddress => whitelist_address
@@ -43,6 +42,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         withdrawEgld => withdraw_egld
         depositEsdt => deposit_esdt
         withdrawEsdt => withdraw_esdt
+        getLastAgreementId => last_agreement_id
         transferTokens => transfer
         pay => pay
         getSubscriptionIds => subscription_ids

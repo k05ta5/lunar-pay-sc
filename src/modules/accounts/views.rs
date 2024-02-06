@@ -3,7 +3,7 @@ multiversx_sc::derive_imports!();
 
 #[multiversx_sc::module]
 pub trait ViewsModule:
-    crate::storage::StorageModule +
+    crate::modules::protocol::storage::StorageModule +
     crate::modules::accounts::storage::StorageModule
 {
     /**

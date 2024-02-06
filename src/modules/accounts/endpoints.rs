@@ -3,8 +3,8 @@ multiversx_sc::derive_imports!();
 
 #[multiversx_sc::module]
 pub trait EndpointsModule:
-    crate::storage::StorageModule +
-    crate::validation::ValidationModule +
+    crate::modules::protocol::storage::StorageModule +
+    crate::modules::protocol::validation::ValidationModule +
 
     crate::modules::accounts::events::EventsModule +
     crate::modules::accounts::storage::StorageModule +

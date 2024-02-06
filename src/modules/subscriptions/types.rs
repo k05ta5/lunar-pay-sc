@@ -32,7 +32,7 @@ pub struct Subscription<M: ManagedTypeApi> {
     pub token_identifier: EgldOrEsdtTokenIdentifier<M>,
 }
 
-pub type ChargeOperationValue<M: ManagedTypeApi> = Option<(BigUint<M>, u64)>;
+// pub type ChargeOperationValue<M: ManagedTypeApi> = Option<(BigUint<M>, u64)>;
 
 #[derive(NestedEncode, NestedDecode, TopEncode, TopDecode, TypeAbi, Clone, PartialEq, Eq)]
 pub struct SubscriptionChargeData<M: ManagedTypeApi> {

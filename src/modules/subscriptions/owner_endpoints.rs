@@ -5,8 +5,9 @@ use crate::modules::subscriptions::types::{SubscriptionType, Subscription, Subsc
 
 #[multiversx_sc::module]
 pub trait OwnerEndpoints:
-    crate::storage::StorageModule +
-    crate::validation::ValidationModule +
+    crate::modules::protocol::storage::StorageModule +
+    crate::modules::protocol::validation::ValidationModule +
+    crate::modules::agreements::storage::StorageModule +
 
     crate::modules::subscriptions::events::EventsModule +
     crate::modules::subscriptions::storage::StorageModule +

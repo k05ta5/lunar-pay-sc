@@ -2,9 +2,9 @@ multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
 #[multiversx_sc::module]
-pub trait ProtocolModule:
-    crate::storage::StorageModule +
-    crate::validation::ValidationModule
+pub trait EndpointsModule:
+    crate::modules::protocol::storage::StorageModule +
+    crate::modules::protocol::validation::ValidationModule
 {
     #[only_owner]
     #[endpoint(whitelistToken)]
