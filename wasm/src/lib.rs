@@ -5,9 +5,9 @@
 ////////////////////////////////////////////////////
 
 // Init:                                 1
-// Endpoints:                           33
+// Endpoints:                           34
 // Async Callback (empty):               1
-// Total number of exported functions:  35
+// Total number of exported functions:  36
 
 #![no_std]
 
@@ -52,6 +52,7 @@ multiversx_sc_wasm_adapter::endpoints! {
         addSubscriptionMember => add_subscription_member
         cancelSubscriptionMembership => cancel_subscription_membership
         createSubscriptionMembership => create_subscription_membership
+        triggerSubscription => trigger_subscription
         createPaymentAgreement => create_payment_agreement
         signAgreement => sign_agreement
         triggerAgreement => trigger_agreement
