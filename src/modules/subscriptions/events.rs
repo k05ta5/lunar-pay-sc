@@ -28,7 +28,7 @@ pub trait EventsModule {
         #[indexed] token_identifier: &EgldOrEsdtTokenIdentifier,
         #[indexed] frequency: u64,
         #[indexed] time_created: u64,
-        #[indexed] agreement_type: SubscriptionType,
+        #[indexed] subscription_type: SubscriptionType,
         #[indexed] amount_type: SubscriptionAmountType,
         #[indexed] amount: Option<BigUint>,
     );
