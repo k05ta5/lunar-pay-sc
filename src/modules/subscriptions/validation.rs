@@ -76,7 +76,7 @@ pub trait ValidationModule:
     }
 
     fn is_subscription_pulicly_triggerable(&self, subscription_type: SubscriptionType) -> bool {
-        subscription_type == SubscriptionType::TermRestrictedPayoutToReceive ||
+        subscription_type == SubscriptionType::RecurringPayoutToReceive ||
             subscription_type == SubscriptionType::TermRestrictedPayoutToReceive
     }
 }
