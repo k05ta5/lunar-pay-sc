@@ -3,6 +3,7 @@ pub mod types;
 pub mod events;
 pub mod amount;
 pub mod cycles;
+pub mod views;
 pub mod validation;
 
 pub mod owner_endpoints;
