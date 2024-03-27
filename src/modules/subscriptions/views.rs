@@ -1,4 +1,3 @@
-use crate::endpoints::subscription_ids;
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 

@@ -4,25 +4,10 @@ multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
 mod modules;
-
-pub mod storage;
-pub mod validation;
-pub mod events;
-
-pub mod agreement;
-pub mod agreement_signing;
-pub mod agreement_cycles;
-pub mod agreement_amount;
-pub mod agreement_triggers;
-
 pub mod types;
 
 #[multiversx_sc::contract]
 pub trait LunarPay:
-    events::EventsModule +
-    storage::StorageModule +
-    validation::ValidationModule +
-
     // Protocol Module
     modules::protocol::events::EventsModule +
     modules::protocol::storage::StorageModule +
@@ -57,13 +42,6 @@ pub trait LunarPay:
     modules::subscriptions::owner_endpoints::OwnerEndpoints +
     modules::subscriptions::member_endpoints::MemberEndpoints +
     modules::subscriptions::public_endpoints::PublicEndpoints +
-
-    // Agreements Module
-    agreement::AgreementsModule +
-    agreement_signing::SignAgreementModule +
-    agreement_triggers::AgreementTriggersModule +
-    agreement_cycles::AgreementCyclesModule +
-    agreement_amount::AgreementAmountModule
 {
     #[init]
     fn init(&self) {}
